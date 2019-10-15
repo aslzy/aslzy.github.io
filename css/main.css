@@ -1847,7 +1847,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #feffff;
+  background: #5cff85;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2382,13 +2382,6 @@ a.search-result {
 .site-pv .busuanzi-value,
 .page-pv .busuanzi-value {
   margin: 0 5px;
-}
-.site-uv {
-  margin-right: 10px;
-}
-.site-uv::after {
-  content: "|";
-  padding-left: 10px;
 }
 #gitment-display-button {
   display: inline-block;
