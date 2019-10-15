@@ -1,0 +1,938 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="学习笔记,运维,数据库,操作指南,SQL,MySQL,工具,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小皮博客 | Xiaopi's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="MySQL基本运维操作指南, 纯工具文为了方便区分 mysql&amp;gt; 表示为MySQL命令行模式，其他为shell终端模式">
+<meta name="keywords" content="学习笔记,运维,数据库,操作指南,SQL,MySQL,工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="30-mysql数据备份基础">
+<meta property="og:url" content="http://blog.xiaoyuyu.net/post/16fe81c6.html">
+<meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
+<meta property="og:description" content="MySQL基本运维操作指南, 纯工具文为了方便区分 mysql&amp;gt; 表示为MySQL命令行模式，其他为shell终端模式">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-17T02:52:36.321Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="30-mysql数据备份基础">
+<meta name="twitter:description" content="MySQL基本运维操作指南, 纯工具文为了方便区分 mysql&amp;gt; 表示为MySQL命令行模式，其他为shell终端模式">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/16fe81c6.html">
+
+
+
+
+
+  <title> 30-mysql数据备份基础 | 小皮博客 | Xiaopi's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-122492745-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1262345012&web_id=1262345012" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小皮博客 | Xiaopi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">没有人的梦想会更卑微,做点什么让自己骄傲</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/projects/library.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            menu.bookmark
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-library">
+          <a href="/library" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            menu.library
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/16fe81c6.html">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="盛领">
+    <meta itemprop="description" content>
+    <meta itemprop="image" content="https://blog.xiaoyuyu.net/img/avtar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小皮博客 | Xiaopi's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="小皮博客 | Xiaopi's Blog" src>
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                30-mysql数据备份基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-08-30T20:40:01+08:00">
+                2015-08-30
+              </time>
+            
+
+            
+
+            <span class="post-meta-divider">|</span>
+            <span title="post.wordcount">
+              1,898 字
+            </span>
+            <span title="post.min2read">
+              需要阅读: 16 分钟
+            </span>
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/术业专攻/" itemprop="url" rel="index">
+                    <span itemprop="name">术业专攻</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>MySQL基本运维操作指南, 纯工具文<br>为了方便区分 mysql&gt; 表示为MySQL命令行模式，其他为shell终端模式</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="1-快速复制MySQL数据库"><a href="#1-快速复制MySQL数据库" class="headerlink" title="1. 快速复制MySQL数据库"></a>1. 快速复制MySQL数据库</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; CREATE DATABASE `newDB` DEFAULT CHARACTER SET UTF8 COLLATE UTF8_GENERAL_CI; # 创建一个新库</span><br><span class="line">shell# mysqldump olddb -uroot -ppassword --add-drop-table | mysql -uuser -ppassword # 本地快速拷贝</span><br><span class="line">shell# mysqldump olddb -uroot -ppassword --add-drop-table | mysql -hlocalhost -uuser -ppassword # 远程快速拷贝</span><br><span class="line">shell# mysqldump -u root --password=xxx dbname | mysql -u root --password=yyy destinationhost dbname # 更加常规的写法</span><br></pre></td></tr></table></figure>
+<h1 id="2-备份方案"><a href="#2-备份方案" class="headerlink" title="2. 备份方案"></a>2. 备份方案</h1><h2 id="mysqldump"><a href="#mysqldump" class="headerlink" title="mysqldump"></a>mysqldump</h2><p>(1)mysqldump命令生成的SQL文件有最好的兼容性.缺点是速度较慢.<br>(2)在备份期间，所有的写操作都将被阻断.<br>(3)shell# mysqldump -u root -p –all-databases &gt; backup.sql<br>(4)shell# mysqldump -u root -p dbname [tables] &gt; backup.sql # 在大型系统中，可以只日常备份用户的UGC数据，而忽略系统本身已经备份或者产生的元数据<br>(5)shell# mysqldump [options] –databases dbname1 dbname2 … &gt; backup.sql<br>(6)备份原理: 备份前给每个表加上一个 读操作锁,每条INSERT命令对应着尽可能多的数据记录,插入DROP TABLENAME命令,保留所有数据库属性,使用UTF8字符集创建备份文件,并且增加SQL命令保留实际字符集信息.<br>(7)shell# mysqldump -u root -p –lock-all-tables databasename &gt; backup.sql # 备份MyISAM数据表<br>(8)shell# mysqldump -u root -p –skip-opt –single-transaction –add-drop-table \ # 禁用默认选项，以使用–single-transaction事务<br>–create-options –quick –extended-insert \<br>–set-charset –disable-keys databasename &gt; backup.sql  #把整个备份工作放在一个事务当中.<br>(9)可以使用 mybackup脚本进行备份，更加方便. <a href="http://www.mswanson.com/mybackup/" target="_blank" rel="noopener">http://www.mswanson.com/mybackup/</a>  </p>
+<p>(10) 从sql文件恢复数据库<br>shell# mysql -u root -p –default-character-set=latin1 databasename &lt; backup.sql # 也许需要使用 mysqladmin create databasename 重建数据库<br>mysql&gt; source /path/to/backup.sql # 通过mysql控制台执行SQL文件<br>(11) 如何快速复制数据库请参考 1. 快速复制MySQL数据库 # vim在非insert模式下可以使用 Shift+#快速跳转<br>(12) UNIX/Linux下可以用 mysql_fix_privilege_tables脚本对用老版本的备份恢复出来的mysql数据表进行升级<br>(13) 可以考虑把老版本的mysql库迁移到新版本的mysql库，重命名为 mysql_4 #加版本号<br>(14) 各个主流的数据库厂商都会拥有跨平台迁移(到自己平台)的工具，当需要跨平台迁移时，请采用MySQL Migration Toolkit,可以参考4-数据库迁移报告.  </p>
+<h2 id="导入和导出文本文件"><a href="#导入和导出文本文件" class="headerlink" title="导入和导出文本文件"></a>导入和导出文本文件</h2><p>mysql&gt; LOAD DATA # 读入一个文本文件并导入到数据表<br>shell# mysqlimport # 命令行版本  </p>
+<p>mysql&gt; SELECT .. INTO FILE # 查询结果写入文件<br>shell# mysqldump #类似于SELECT .. INFO file<br>mysql&gt; SELECT * INTO OUTFILE ‘/tmp/mysql_user.txt’ FIELDS TERMINATED BY ‘;’ ENCLOSED BY ‘\”‘ FROM user ; # 将user表导入文件<br>shell# mysqldump -u root -p –xml mysql user &gt; /tmp/mysql_user.xml # 将数据库导出成为xml文件  </p>
+<h2 id="导入导出csv文件"><a href="#导入导出csv文件" class="headerlink" title="导入导出csv文件"></a>导入导出csv文件</h2><p>FIELDS TERMINATED BY ‘,’ ENCLOSED BY ‘\”‘ LINES TERMINATED BY ‘\r\n’ #常规<br>shell# mysqlimport –local “–fields-enclosed-by=\”” \<br>       “–lines-terminated-by=\r\n” exceptions /tmp/backup.csv  </p>
+<h2 id="便于阅读的mysql文件"><a href="#便于阅读的mysql文件" class="headerlink" title="便于阅读的mysql文件"></a>便于阅读的mysql文件</h2><p>shell# mysql -u root –password=151warden –batch –default-character-set=latin1 “–execute=SELECT <em> FROM user;” mysql &gt; /tmp/mysql_output.txt # 各个数据列将由制表符隔开，并且包含各个数据列的标题．可以转化为csv文件<br>shell#  mysql -u root –password=151warden –html –default-character-set=latin1 “–execute=SELECT </em> FROM user;” mysql &gt; /tmp/mysql_output.html # 导出html表格文件<br>shell#  mysql -u root –password=151warden –xml –default-character-set=latin1 “–execute=SELECT * FROM user;” mysql &gt; /tmp/mysql_output.xml # 导出成为xml文件  </p>
+<blockquote>
+<p>视图的备份与数据表区别并不大，但是存储过程最好的备份方法是将其当做源代码，与源代码共同管理,并加上MySQL对应的数据库时间戳.</p>
+</blockquote>
+<h2 id="mysqlhotcopy-可以保证伪热备份，但是只支持MyISAM引擎，所以一般不考虑"><a href="#mysqlhotcopy-可以保证伪热备份，但是只支持MyISAM引擎，所以一般不考虑" class="headerlink" title="mysqlhotcopy 可以保证伪热备份，但是只支持MyISAM引擎，所以一般不考虑"></a>mysqlhotcopy 可以保证伪热备份，但是只支持MyISAM引擎，所以一般不考虑</h2><p>shell# mysqlhotcopy dbname1 dbname2 .. backup/ # 将数据库文件直接hotcopy<br>shell# chown -R mysql.mysql /var/lib/mysql/dbname # 注意将文件属主修改为mysql.mysql  </p>
+<h2 id="InnoDB-hot-Backup工具可以进行热备份"><a href="#InnoDB-hot-Backup工具可以进行热备份" class="headerlink" title="InnoDB hot Backup工具可以进行热备份"></a>InnoDB hot Backup工具可以进行热备份</h2><h1 id="3-日志文件与定期制作增量备份文件相结合"><a href="#3-日志文件与定期制作增量备份文件相结合" class="headerlink" title="3. 日志文件与定期制作增量备份文件相结合."></a>3. 日志文件与定期制作增量备份文件相结合.</h1><h2 id="启用日志-配置-etc-my-cnf-并且重启mysql服务"><a href="#启用日志-配置-etc-my-cnf-并且重启mysql服务" class="headerlink" title="启用日志 配置/etc/my.cnf 并且重启mysql服务"></a>启用日志 配置/etc/my.cnf 并且重启mysql服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">log-bin=/path/to/mysql_bin_log # 将在/var/lib/mysql/目录下生成 mysql_bin_log.000001  mysql_bin_log.index 两个文件</span><br><span class="line">请务必在使用数据库镜像的时候，建立这样的文件.否则将以服务器主机名称作为文件名，一旦切换则无法继续使用.</span><br><span class="line">mysql&gt;FLUSH LOGS; #切换到新的日志文件的最佳时机是在对系统进行了一次完整备份之后.</span><br><span class="line">shell# mysqladmin flush-logs # 同上</span><br><span class="line">PURGE MASTER LOGS TO # 删除日志文件</span><br></pre></td></tr></table></figure>
+<h2 id="利用日志文件恢复-应该用最近一次制作的完整备份恢复数据库，然后依次使用日志文件恢复到最近的可用状态"><a href="#利用日志文件恢复-应该用最近一次制作的完整备份恢复数据库，然后依次使用日志文件恢复到最近的可用状态" class="headerlink" title="利用日志文件恢复,应该用最近一次制作的完整备份恢复数据库，然后依次使用日志文件恢复到最近的可用状态"></a>利用日志文件恢复,应该用最近一次制作的完整备份恢复数据库，然后依次使用日志文件恢复到最近的可用状态</h2><p>shell# mysqlbinlog name-bin.00031 | mysql -u root -p<br>shell# mysqlbinlog name-bin.00032 | mysql -u root -p</p>
+<h2 id="执行数据备份的流程如下"><a href="#执行数据备份的流程如下" class="headerlink" title="执行数据备份的流程如下"></a>执行数据备份的流程如下</h2><p>全量备份: 全量备份当前数据库,删除所有日志文件，或者删除其引用.启用新的日志文件<br>增量备份: 启用新的日志文件  </p>
+<p>执行恢复或者合并时: 从全量备份数据库文件重建数据库,执行日志恢复  </p>
+<h1 id="4-数据库镜像"><a href="#4-数据库镜像" class="headerlink" title="4. 数据库镜像"></a>4. 数据库镜像</h1><h2 id="为镜像机制创建一个MySQL用户账号"><a href="#为镜像机制创建一个MySQL用户账号" class="headerlink" title="为镜像机制创建一个MySQL用户账号"></a>为镜像机制创建一个MySQL用户账号</h2><p>(1)GRANT REPLICATION SLAVE ON <em>.</em> TO replicuser@slavehostname IDENTIFIED BY ‘slavepassword’;<br>(2)slavehostname需要在路由表中配置<br>(3)在从属系统上使用 mysql -u replicuser -p slavepassword -h masterhostname来测试是否连接成功<br>(4) 在配置从属计算机的时候，需要用一个日志文件名和这个日志文件的起始位置，从计算机将从这个日志文件里的这个位置开始读取数据.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; FLUSH TABLES WITH READ LOCK;  </span><br><span class="line">Query OK, 0 rows affected (0.00 sec)  </span><br><span class="line"></span><br><span class="line">mysql&gt; SHOW MASTER STATUS;  </span><br><span class="line">+----------------------+----------+--------------+------------------+  </span><br><span class="line">| File                 | Position | Binlog_Do_DB | Binlog_Ignore_DB |  </span><br><span class="line">+----------------------+----------+--------------+------------------+  </span><br><span class="line">| mysql_bin_log.000002 |      106 |              |                  |  </span><br><span class="line">+----------------------+----------+--------------+------------------+  </span><br><span class="line"></span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure></p>
+<p>(5) 执行mysqladmin -uroot -p shutdown关闭MySQL服务器<br>(6) 日志文件应该单独指定文件夹，以免镜像时的复杂操作弄混<br>(7) 创建数据库的初始副本<br>cd /var/lib/mysql/<br>tar vzcf snapshot.tgz .<br>(8) 配置/etc/my.cnf</p>
+<pre><code>[mysqld]  
+log-bin=/var/log/mysqllog/mysqlmaster
+server-id=1
+</code></pre><p>(9) 如果配置文件路径不存在，需要建立并且赋予mysql.mysql属主权限<br>shell# chown -R mysql.mysql mysqllog/<br>shell# chmod -R 775 mysqllog/<br>(10) 重启数据库服务器(Master)<br>(11) 关闭数据库服务器(Slave)<br>/etc/init.d/mysqld stop<br>(12) 拷贝数据库备份文件到从属服务器并且重建数据库<br>scp <a href="mailto:root@192.168.209.129" target="_blank" rel="noopener">root@192.168.209.129</a>:/tmp/snapshot.tgz /tmp/<br>cd /var/lib/<br>mv mysql/ mysql-bak/ # 将安装后的mysql文件先备份起来<br>mkdir mysql # 新建mysql文件夹,因为/etc/my.cnf中应该还是这么配置的<br>cd mysql<br>tar xzfv /tmp/snapshot.tgz # 解压快照文件到当前目录<br>cd ..<br>chown mysql.mysql -R mysql/ # 将mysql文件夹的属主换为mysql用户<br>chcon -R -t mysqld_db_t /var/lib/mysql/ # 将模式切换位 mysqld_db_t<br>(13) 配置从属服务器的/etc/my.cnf<br>[mysqld]<br>server-id=11<br>(14) 启动镜像机制<br>CHANGE MASTER TO<br>MASTER_HOST=’192.168.209.129’,<br>MASTER_PORT=3306,<br>MASTER_USER=’replicuser’,<br>MASTER_PASSWORD=’151warden’,<br>MASTER_LOG_FILE=’mysqlmaster.000002’,<br>MASTER_LOG_POS=350;<br>(15) 关闭主服务器上的防火墙<br>service iptables stop<br>iptables: Setting chains to policy ACCEPT: filter          [  OK  ]<br>iptables: Flushing firewall rules:                         [  OK  ]<br>iptables: Unloading modules:                               [  OK  ]<br>(16) 测试连接,在slave机上输入<br>shell# mysql -ureplicuser -p -h192.168.209.129 # 如果失败，请检查<br>(17) 启动slave<br>mysql&gt; start slave；<br>mysql&gt; show slave status \G<br>   Slave_IO_Running: Yes   #确保为yes<br>   Slave_SQL_Running: Yes  #确保为yes<br>如果上述步骤出错，请检查slave服务器的数据库日志/var/log/mysqld.log<br>(18) 在主服务器插入数据，检查是否在从服务器有相应的数据<br> </p><p><!--<span id="busuanzi_container_page_pv">
+   阅读量<span id="busuanzi_value_page_pv"></span>次
+</span>--></p><p></p>
+
+      
+    </div>
+
+    <!-- add by ling -->
+    <div>
+      
+        <div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>版权声明</span></p>
+  <p><span>本文标题:</span>30-mysql数据备份基础</p>
+  <p><span>文章作者:</span>盛领</p>
+  <p><span>发布时间:</span>2015年08月30日 - 20:40:01</p>
+  <!--<p><span>最后更新:</span>2019年09月17日 - 10:52:36</p>-->
+  <p><span>原始链接:</span><a href="/post/16fe81c6.html" title="30-mysql数据备份基础">http://blog.xiaoyuyu.net/post/16fe81c6.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/16fe81c6.html" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+  <p>如您有任何商业合作或者授权方面的协商，请给我留言：<a href="mailto: sunsetxiao@126.com">sunsetxiao@126.com</a></p>
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+      
+    </div>
+    <!-- //end -->
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/img/wechat-mp-qcode.jpg" alt="盛领 wechat" style="width: 200px; max-width: 100%;">
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechatpay_sl.png" alt="盛领 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/img/alipay_sl.jpeg" alt="盛领 Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
+          
+            <a href="/tags/运维/" rel="tag"><i class="fa fa-tag"></i> 运维</a>
+          
+            <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          
+            <a href="/tags/操作指南/" rel="tag"><i class="fa fa-tag"></i> 操作指南</a>
+          
+            <a href="/tags/SQL/" rel="tag"><i class="fa fa-tag"></i> SQL</a>
+          
+            <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+          
+            <a href="/tags/工具/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/466a9f65.html" rel="next" title="14-mysql基本运维操作指南">
+                <i class="fa fa-chevron-left"></i> 14-mysql基本运维操作指南
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/457bf861.html" rel="prev" title="31-mysql双主多从配置">
+                31-mysql双主多从配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://blog.xiaoyuyu.net/img/avtar.jpg" alt="盛领">
+          <p class="site-author-name" itemprop="name">盛领</p>
+          <p class="site-description motion-element" itemprop="description">技术宅,架构,Java,历史,地理,天文</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">78</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">143</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sunsetyan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/ling.sheng.752" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zaih.com/mentor/85254499/" target="_blank" title="在行">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  在行
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://geek.xiaoyuyu.net/" title="演" target="_blank">演</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://redteamobile.com/" title="红茶移动" target="_blank">红茶移动</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://zyan.cc/" title="张宴的博客" target="_blank">张宴的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://lionheartwang.github.io/" title="一光的博客" target="_blank">一光的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gaigaiming.com/" title="改改名" target="_blank">改改名</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <br>
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/2.js?i=5xxeaiks0u6&amp;m=7&amp;s=178&amp;c=ff0000&amp;t=1" async="async"></script>
+
+<br>
+
+<hr>
+
+<div>
+<iframe width="216" height="512" class="share_self" frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=216&height=512&fansRow=2&ptype=1&speed=0&skin=10&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=6222531012&verifier=92d11e18&dpc=1"></iframe>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-快速复制MySQL数据库"><span class="nav-number">1.</span> <span class="nav-text">1. 快速复制MySQL数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-备份方案"><span class="nav-number">2.</span> <span class="nav-text">2. 备份方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mysqldump"><span class="nav-number">2.1.</span> <span class="nav-text">mysqldump</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入和导出文本文件"><span class="nav-number">2.2.</span> <span class="nav-text">导入和导出文本文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入导出csv文件"><span class="nav-number">2.3.</span> <span class="nav-text">导入导出csv文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#便于阅读的mysql文件"><span class="nav-number">2.4.</span> <span class="nav-text">便于阅读的mysql文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysqlhotcopy-可以保证伪热备份，但是只支持MyISAM引擎，所以一般不考虑"><span class="nav-number">2.5.</span> <span class="nav-text">mysqlhotcopy 可以保证伪热备份，但是只支持MyISAM引擎，所以一般不考虑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InnoDB-hot-Backup工具可以进行热备份"><span class="nav-number">2.6.</span> <span class="nav-text">InnoDB hot Backup工具可以进行热备份</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-日志文件与定期制作增量备份文件相结合"><span class="nav-number">3.</span> <span class="nav-text">3. 日志文件与定期制作增量备份文件相结合.</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启用日志-配置-etc-my-cnf-并且重启mysql服务"><span class="nav-number">3.1.</span> <span class="nav-text">启用日志 配置/etc/my.cnf 并且重启mysql服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用日志文件恢复-应该用最近一次制作的完整备份恢复数据库，然后依次使用日志文件恢复到最近的可用状态"><span class="nav-number">3.2.</span> <span class="nav-text">利用日志文件恢复,应该用最近一次制作的完整备份恢复数据库，然后依次使用日志文件恢复到最近的可用状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行数据备份的流程如下"><span class="nav-number">3.3.</span> <span class="nav-text">执行数据备份的流程如下</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-数据库镜像"><span class="nav-number">4.</span> <span class="nav-text">4. 数据库镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为镜像机制创建一个MySQL用户账号"><span class="nav-number">4.1.</span> <span class="nav-text">为镜像机制创建一个MySQL用户账号</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2003 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">盛领</span>
+  <!--<span id="busuanzi_container_site_uv" class="author"> 
+    本站访客数 <span id="busuanzi_value_site_uv"></span>人次
+  </span> busuanziguale-->
+  <a href="http://www.miitbeian.gov.cn">京ICP备15045082号-1</a>
+  
+</div>
+<div class="copyright">
+<p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1262345012'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262345012%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script></p>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<!-- 3d -->
+
+<script type="text/javascript" color="0,0,0" opacity="0.67" zindex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":128,"height":256},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

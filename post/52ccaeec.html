@@ -1,0 +1,1093 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="技术专题,数据结构专题,红黑树,2-3-4树,BST树,平衡二叉树,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小皮博客 | Xiaopi's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="2-3-4树是一个不太广泛应用的数据结构，但是可以帮助我们更好的理解红黑树。参考来自于普林斯顿大学计算机学院资料-红黑树.pdf">
+<meta name="keywords" content="技术专题,数据结构专题,红黑树,2-3-4树,BST树,平衡二叉树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="57-从2-3-4树的角度理解红黑树-1">
+<meta property="og:url" content="http://blog.xiaoyuyu.net/post/52ccaeec.html">
+<meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
+<meta property="og:description" content="2-3-4树是一个不太广泛应用的数据结构，但是可以帮助我们更好的理解红黑树。参考来自于普林斯顿大学计算机学院资料-红黑树.pdf">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-01.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-02.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-03.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-04.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-05.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-06.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-07.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-08.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-09.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-10.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-11.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-12.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-13.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-14.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-15.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-16.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-17.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-18.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-19.png">
+<meta property="og:updated_time" content="2019-09-17T02:52:36.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="57-从2-3-4树的角度理解红黑树-1">
+<meta name="twitter:description" content="2-3-4树是一个不太广泛应用的数据结构，但是可以帮助我们更好的理解红黑树。参考来自于普林斯顿大学计算机学院资料-红黑树.pdf">
+<meta name="twitter:image" content="http://blog.xiaoyuyu.net/img/2018/2018-08-rb/234-rb-01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/52ccaeec.html">
+
+
+
+
+
+  <title> 57-从2-3-4树的角度理解红黑树-1 | 小皮博客 | Xiaopi's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-122492745-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1262345012&web_id=1262345012" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小皮博客 | Xiaopi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">没有人的梦想会更卑微,做点什么让自己骄傲</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/projects/library.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            menu.bookmark
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-library">
+          <a href="/library" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            menu.library
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/52ccaeec.html">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="盛领">
+    <meta itemprop="description" content>
+    <meta itemprop="image" content="https://blog.xiaoyuyu.net/img/avtar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小皮博客 | Xiaopi's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="小皮博客 | Xiaopi's Blog" src>
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                57-从2-3-4树的角度理解红黑树-1
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-22T13:09:54+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            <span class="post-meta-divider">|</span>
+            <span title="post.wordcount">
+              1,815 字
+            </span>
+            <span title="post.min2read">
+              需要阅读: 14 分钟
+            </span>
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/术业专攻/" itemprop="url" rel="index">
+                    <span itemprop="name">术业专攻</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>2-3-4树是一个不太广泛应用的数据结构，但是可以帮助我们更好的理解红黑树。<br>参考来自于<a href="http://www.cs.princeton.edu/~rs/talks/LLRB/RedBlack.pdf" target="_blank" rel="noopener">普林斯顿大学计算机学院资料-红黑树.pdf</a><br><a id="more"></a></p>
+<h1 id="2-3-4树说明"><a href="#2-3-4树说明" class="headerlink" title="2-3-4树说明"></a>2-3-4树说明</h1><p>BST是二叉查找树,每个节点只能有一个Key, 而2-3-4树则是将节点的key增加,可以有多个key。(2-3-4树可以保持完美平衡，每个节点到叶节点的高度一致)。</p>
+<p>2-3-4树的节点种类<br>2-Node: one key, two child.左孩子比key小,右孩子比key大。<br>3-Node: two keys, three children. 左孩子比左key小，中孩子大于左key小于右key(显然右key大于左key)，右孩子大于右key。<br>4-Node: three keys, four children. 同理。</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-01.png" alt="2-3-4树示意图"> </center><br><center>图1 2-3-4树的示意图</center>
+
+
+
+<h1 id="2-3-4树查找"><a href="#2-3-4树查找" class="headerlink" title="2-3-4树查找"></a>2-3-4树查找</h1><p>和BST树类似,递归找到所在子树即可。  </p>
+<ul>
+<li>Compare search key against keys in node.(与节点中的key比较)   </li>
+<li>Find interval containing search key.(查找包含待查找关键字的区间)    </li>
+<li>Follow associated link (recursively).(递归直到找到值为止)    <center><img src="/img/2018/2018-08-rb/234-rb-02.png" alt="2-3-4树查找示意图"> </center><br><center>图2 2-3-4树的查找</center>
+
+
+</li>
+</ul>
+<h1 id="2-3-4树插入"><a href="#2-3-4树插入" class="headerlink" title="2-3-4树插入"></a>2-3-4树插入</h1><p>先查找到树的底部  </p>
+<center><img src="/img/2018/2018-08-rb/234-rb-03.png" alt></center><br><center>图3 2-3-4树的插入-先查找到底部</center>
+
+
+<p>在底部插入key。</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-04.png" alt></center><br><center>图4 2-3-4树的插入-插入数据 2-Node变为3-Node</center>
+
+
+
+<p>同理，3-Node转换为4-Node即可。(后面删除的时候同样会逆向得出,4-Node直接删成3-Node即可,3-Node直接删成2-Node即可)。这里不演示图片了。</p>
+<p>向4-Node插入，则变换,将4-Node的中间节点向上移动到父节点。假如父节点也是4-Node呢?继续上移吗?为了性质简单器件，目前的做法是保证不会连续出现两个连续的4-Node。即一个4-Node节点不会有一个4-Node的儿子。</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-05.png" alt></center><br><center>图5 2-3-4树的插入-插入数据 4-Node</center>
+
+
+
+<p>简单的情况,将4-Node的中间节点向上移动。</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-06.png" alt></center><br><center>图6 2-3-4树的插入-插入数据 4-Node 简单的变换</center>
+
+
+
+<p>参考文献中提到如何解决4-Node插入的问题。</p>
+<blockquote>
+<p>Bottom-up solution (Bayer, 1972).<br>• Use same method to split parent<br>• Continue up the tree while necessary.<br>Top-down solution (Guibas-Sedgewick, 1978).<br>• Split 4-nodes on the way down.<br>• Insert at bottom.  </p>
+</blockquote>
+<p><em>论文原文的字面含义应该是说遇到4-Node的情况就先变换掉。但是好像还是略过了父节点是4-Node,子节点是3-Node的情况应该怎么变换。也许是说递归的,2-4的父子结构转换成3-2/2的父子结构,3-4的父子结构转换成4-2/2的父子结构,转换完了之后递归往上，看转换后的4是不是需要调整吧。<br>当然，理论上其实如果保证叶子节点不会出现4-Node，好像也是可以的。但是仍然要递归操作的样子。</em></p>
+<center><img src="/img/2018/2018-08-rb/234-rb-07.png" alt></center><br><center>图7 2-3-4树的插入-插入数据 4-Node情形下的预先准备工作</center>
+
+
+
+<p>先看简单的情况,is a local transformation that works anywhere in the tree</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-08.png" alt></center><br><center>图8 2-3-4树的插入-插入数据 4-Node的父节点是2-Node</center>
+
+
+
+<center><img src="/img/2018/2018-08-rb/234-rb-09.png" alt></center><br><center>图9 2-3-4树的插入-插入数据 4-Node的父节点是3-Node</center>
+
+
+
+<h1 id="2-3-4树的构建过程"><a href="#2-3-4树的构建过程" class="headerlink" title="2-3-4树的构建过程"></a>2-3-4树的构建过程</h1><ul>
+<li>参考前面的插入逻辑.<br><center><img src="/img/2018/2018-08-rb/234-rb-10.png" alt></center><br><center>图10 2-3-4树的简单构建过程</center>.   </li>
+</ul>
+<center><img src="/img/2018/2018-08-rb/234-rb-11.png" alt> </center><br><center>图11 2-3-4树的简单构建过程</center>
+
+
+
+<p>所有根节点的高度始终在保持一致。其实相当于把不一致的可能性糅合到了2-3-4节点当中。</p>
+<blockquote>
+<p>树的高度:<br>• 最坏情况: lgN [都是2-Node,退化成2叉树].<br>• 最好的情况: log4 N = 1/2 lg N [都是4-Node].<br>• 100万数据的情况下高度在10~20之间。<br>• 10亿数据的高度在15~30之间。<br>可以保证保证搜索和插入的对数性能。  </p>
+</blockquote>
+<h1 id="RedBlackTree和2-3-4树的关系"><a href="#RedBlackTree和2-3-4树的关系" class="headerlink" title="RedBlackTree和2-3-4树的关系"></a>RedBlackTree和2-3-4树的关系</h1><p>由于2-3-4树实现起来较为复杂，所以将其表示为二叉树并且做更多的约束以使其具备2-3-4树的优点，同时便于实现，也就出现了红黑树。</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-12.png" alt> </center><br><center>图12 红黑树的简图</center>
+
+
+
+<center><img src="/img/2018/2018-08-rb/234-rb-13.png" alt> </center><br><center>图13 用一条特殊的边，将3,4节点之间内部用连线链接起来，放到树里面</center>
+
+
+<p>这样，原来本来黑色的边并没有变，所以每条路径上黑色的边都是一样多的。</p>
+<p>关键点:<br>• 仍然保持二叉查找树(BST)的特性。<br>• easy to maintain a correspondence with 2-3-4 trees<br>(and several other types of balanced trees)</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-14.png" alt> </center><br><center>图14 一个稍微复杂点的情况</center>
+
+
+
+<p>由于3-Node节点有两种选择，如前文提到的，我们这里约束为，Left-leaning,这样也就确定了2-3-4树转换为红黑树的形态。同时还需要做的是将同一个路径上连续两个连续的红边调整好。</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-15.png" alt> </center><br><center>图15 连续两条红边的情况</center>
+
+
+
+<p>红黑树节点的ADT定义</p>
+<pre>
+public class BST<key extends comparable<key>, Value>
+{
+    private static final boolean RED = true;
+    private static final boolean BLACK = false;
+    private Node root;
+    private class Node
+    {
+        Key key;
+        Value val;
+        Node left, right;
+        ***boolean color;***
+        Node(Key key, Value val, boolean color)
+        {
+            this.key = key;
+            this.val = val;
+            this.color = color;
+        }
+    }
+    public Value get(Key key)
+    // Search method.
+    public void put(Key key, Value val)
+    // Insert method.
+}
+</key></pre>
+
+<p>为了保证与2-3-4树一一对应产生红黑树(不会出现二义性).  </p>
+<h1 id="红黑树的插入操作"><a href="#红黑树的插入操作" class="headerlink" title="红黑树的插入操作"></a>红黑树的插入操作</h1><p>添加新节点时和普通BST一致，并且将添加的点和插入的父节点之间的边用红色标记(类似于之前2-3-4树中插入的逻辑).<br>有必要的时候旋转以获得正确的3-Node或者4-Node。  </p>
+<center><img src="/img/2018/2018-08-rb/234-rb-16.png" alt> </center><br><center>图16 2-Node和3-Node插入及调整的情况说明</center>
+
+
+
+<p><strong>重点待解决问题: 这里是用红色或者黑色描述边，但是实际上最后颜色属性是在Node也就是点上，考虑到一个父节点对应两个字节点，也就是说，每个节点的Color决定的是其到父亲的那条边的颜色。</strong><br>应该叫做toParentLineColor,而不是NodeColor.<br>更加引申的推论是，如果父节点只有一个儿子的情况，那就可以把儿子由红色变成黑色，父亲变成红色(这样黑色路径的数量才不会变)。而如果父节点有两个儿子，则他变成红色的情况，有且只有两个儿子都为红色的变成黑色的情况，这样才能维护黑色边的balance。</p>
+<p>当插入到一个4-Node中时,需要分析其父节点的情况。</p>
+<p>父节点为2-Node:</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-17.png" alt> </center><br><center>图17 要插入位置为4-Node且父节点为2-Node时插入及调整的情况说明</center>
+
+
+
+<p>父节点为3-Node:</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-18.png" alt> </center><br><center>图18 要插入位置为4-Node且父节点为3-Node时插入及调整的情况说明</center>
+
+
+
+<p>所以整个插入流程归纳一下:<br>待插入位置为2-Node或者3-Node的时候，直接插入,待插入节点为4-Node的时候，经过上述调整后，进行操作。</p>
+<center><img src="/img/2018/2018-08-rb/234-rb-19.png" alt> </center><br><center>图19 要插入位置为4-Node时的操作逻辑</center>
+
+
+
+<pre>
+private Node insert(Node h, Key key, Value val)
+ {
+ if (h == null)
+ return new Node(key, val, RED);
+ if (isRed(h.left) && isRed(h.right))
+ colorFlip(h);
+ int cmp = key.compareTo(h.key);
+ if (cmp == 0) h.val = val;
+ else if (cmp < 0)
+ h.left = insert(h.left, key, val);
+ else
+ h.right = insert(h.right, key, val);
+ if (isRed(h.right))
+ h = rotateLeft(h);
+
+ if (isRed(h.left) && isRed(h.left.left))
+ h = rotateRight(h);
+ return h;
+ }
+</pre>
+
+
+
+
+
+
+<p><!--<span id="busuanzi_container_page_pv">
+   阅读量<span id="busuanzi_value_page_pv"></span>次
+</span>--></p>
+
+      
+    </div>
+
+    <!-- add by ling -->
+    <div>
+      
+        <div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>版权声明</span></p>
+  <p><span>本文标题:</span>57-从2-3-4树的角度理解红黑树-1</p>
+  <p><span>文章作者:</span>盛领</p>
+  <p><span>发布时间:</span>2018年08月22日 - 13:09:54</p>
+  <!--<p><span>最后更新:</span>2019年09月17日 - 10:52:36</p>-->
+  <p><span>原始链接:</span><a href="/post/52ccaeec.html" title="57-从2-3-4树的角度理解红黑树-1">http://blog.xiaoyuyu.net/post/52ccaeec.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/52ccaeec.html" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+  <p>如您有任何商业合作或者授权方面的协商，请给我留言：<a href="mailto: sunsetxiao@126.com">sunsetxiao@126.com</a></p>
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+      
+    </div>
+    <!-- //end -->
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/img/wechat-mp-qcode.jpg" alt="盛领 wechat" style="width: 200px; max-width: 100%;">
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechatpay_sl.png" alt="盛领 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/img/alipay_sl.jpeg" alt="盛领 Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/技术专题/" rel="tag"><i class="fa fa-tag"></i> 技术专题</a>
+          
+            <a href="/tags/数据结构专题/" rel="tag"><i class="fa fa-tag"></i> 数据结构专题</a>
+          
+            <a href="/tags/红黑树/" rel="tag"><i class="fa fa-tag"></i> 红黑树</a>
+          
+            <a href="/tags/2-3-4树/" rel="tag"><i class="fa fa-tag"></i> 2-3-4树</a>
+          
+            <a href="/tags/BST树/" rel="tag"><i class="fa fa-tag"></i> BST树</a>
+          
+            <a href="/tags/平衡二叉树/" rel="tag"><i class="fa fa-tag"></i> 平衡二叉树</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/73f47dbe.html" rel="next" title="50-BST二叉排序树">
+                <i class="fa fa-chevron-left"></i> 50-BST二叉排序树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/e8ef2bb5.html" rel="prev" title="59-关于梦想与压力">
+                59-关于梦想与压力 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://blog.xiaoyuyu.net/img/avtar.jpg" alt="盛领">
+          <p class="site-author-name" itemprop="name">盛领</p>
+          <p class="site-description motion-element" itemprop="description">技术宅,架构,Java,历史,地理,天文</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">78</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">143</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sunsetyan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/ling.sheng.752" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zaih.com/mentor/85254499/" target="_blank" title="在行">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  在行
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://geek.xiaoyuyu.net/" title="演" target="_blank">演</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://redteamobile.com/" title="红茶移动" target="_blank">红茶移动</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://zyan.cc/" title="张宴的博客" target="_blank">张宴的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://lionheartwang.github.io/" title="一光的博客" target="_blank">一光的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gaigaiming.com/" title="改改名" target="_blank">改改名</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <br>
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/2.js?i=5xxeaiks0u6&amp;m=7&amp;s=178&amp;c=ff0000&amp;t=1" async="async"></script>
+
+<br>
+
+<hr>
+
+<div>
+<iframe width="216" height="512" class="share_self" frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=216&height=512&fansRow=2&ptype=1&speed=0&skin=10&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=6222531012&verifier=92d11e18&dpc=1"></iframe>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2-3-4树说明"><span class="nav-number">1.</span> <span class="nav-text">2-3-4树说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-3-4树查找"><span class="nav-number">2.</span> <span class="nav-text">2-3-4树查找</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-3-4树插入"><span class="nav-number">3.</span> <span class="nav-text">2-3-4树插入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-3-4树的构建过程"><span class="nav-number">4.</span> <span class="nav-text">2-3-4树的构建过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedBlackTree和2-3-4树的关系"><span class="nav-number">5.</span> <span class="nav-text">RedBlackTree和2-3-4树的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#红黑树的插入操作"><span class="nav-number">6.</span> <span class="nav-text">红黑树的插入操作</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2003 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">盛领</span>
+  <!--<span id="busuanzi_container_site_uv" class="author"> 
+    本站访客数 <span id="busuanzi_value_site_uv"></span>人次
+  </span> busuanziguale-->
+  <a href="http://www.miitbeian.gov.cn">京ICP备15045082号-1</a>
+  
+</div>
+<div class="copyright">
+<p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1262345012'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262345012%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script></p>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<!-- 3d -->
+
+<script type="text/javascript" color="0,0,0" opacity="0.67" zindex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":128,"height":256},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

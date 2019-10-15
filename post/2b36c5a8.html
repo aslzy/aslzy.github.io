@@ -1,0 +1,947 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="log,日志分析,数据分析,监控,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小皮博客 | Xiaopi's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="日志分析和故障排查的若干意见概述 日志中的数据分析本质是属于数据分析的范畴，和故障排查理论上来说应该是分开进行的。不同的数据规模总是会有不同的解决方案。">
+<meta name="keywords" content="log,日志分析,数据分析,监控">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6-日志分析和故障排查的若干意见">
+<meta property="og:url" content="http://blog.xiaoyuyu.net/post/2b36c5a8.html">
+<meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
+<meta property="og:description" content="日志分析和故障排查的若干意见概述 日志中的数据分析本质是属于数据分析的范畴，和故障排查理论上来说应该是分开进行的。不同的数据规模总是会有不同的解决方案。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-17T02:52:36.328Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6-日志分析和故障排查的若干意见">
+<meta name="twitter:description" content="日志分析和故障排查的若干意见概述 日志中的数据分析本质是属于数据分析的范畴，和故障排查理论上来说应该是分开进行的。不同的数据规模总是会有不同的解决方案。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/2b36c5a8.html">
+
+
+
+
+
+  <title> 6-日志分析和故障排查的若干意见 | 小皮博客 | Xiaopi's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-122492745-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1262345012&web_id=1262345012" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小皮博客 | Xiaopi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">没有人的梦想会更卑微,做点什么让自己骄傲</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/projects/library.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            menu.bookmark
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-library">
+          <a href="/library" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            menu.library
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/2b36c5a8.html">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="盛领">
+    <meta itemprop="description" content>
+    <meta itemprop="image" content="https://blog.xiaoyuyu.net/img/avtar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小皮博客 | Xiaopi's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="小皮博客 | Xiaopi's Blog" src>
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                6-日志分析和故障排查的若干意见
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-05T00:32:18+08:00">
+                2017-01-05
+              </time>
+            
+
+            
+
+            <span class="post-meta-divider">|</span>
+            <span title="post.wordcount">
+              1,562 字
+            </span>
+            <span title="post.min2read">
+              需要阅读: 10 分钟
+            </span>
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/术业专攻/" itemprop="url" rel="index">
+                    <span itemprop="name">术业专攻</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="日志分析和故障排查的若干意见"><a href="#日志分析和故障排查的若干意见" class="headerlink" title="日志分析和故障排查的若干意见"></a>日志分析和故障排查的若干意见</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>日志中的数据分析本质是属于数据分析的范畴，和故障排查理论上来说应该是分开进行的。不同的数据规模总是会有不同的解决方案。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="日志数据分析需要进行的准备工作"><a href="#日志数据分析需要进行的准备工作" class="headerlink" title="日志数据分析需要进行的准备工作"></a>日志数据分析需要进行的准备工作</h2><ul>
+<li><p>一般来说，日志数据的分析都是离线，定时来进行的。常用流式处理框架。很多数据公司都有解决方案。另外需要在日志的生产环节做好定义，越是结构化的数据，分析的难度越低。</p>
+</li>
+<li><p>日志分析的数据来源一般包括业务日志和容器的日志。也可能还包括操作系统日志。日志级别的定义也是比较重要的。一般也可以考虑从逻辑上将日志按照文件来拆分。总之就是日志生产环节做的工作，好处都会在后面的分析，排查和监控环节放大。</p>
+</li>
+<li><p>日志分析属于数据分析的范畴，所以在客户端需要做好埋点（需要做到精确定义好不同的用户行为或者系统行为,不要在一个数据埋点中标识多个行为）。服务器端也要做好埋点（一般为了区分，称之为桩）。一般来说服务的日志分析是以请求为核心来做的。每次请求，需要定义好元数据(ip, sessionId, requestId, service信息, 浏览器或者Client信息等),做好埋点和桩，进行pv，uv和其他统计是轻而易举的事情。(多说一句，压力测试的请求在请求报文里要做好标记，不纳入统计,测试客户端类同)</p>
+</li>
+</ul>
+<h2 id="不同数据规模采用的分析方案建议如下。"><a href="#不同数据规模采用的分析方案建议如下。" class="headerlink" title="不同数据规模采用的分析方案建议如下。"></a>不同数据规模采用的分析方案建议如下。</h2><ul>
+<li>每日日志0~20G时,分析项少于20项 shell脚本(其他简单工具u)+定时任务即可</li>
+<li>超过此数据规模，可以考虑引入流式处理的框架。</li>
+</ul>
+<h2 id="日志分析的需求点"><a href="#日志分析的需求点" class="headerlink" title="日志分析的需求点"></a>日志分析的需求点</h2><ul>
+<li>可以直接参考<strong>友盟</strong> | <strong>TalkingData</strong>或者其他第三方数据分析平台的数据点及呈现形式，然后从中识别出哪些是通过日志分析作为数据源来获得的。顺便可以总结出他们的其他数据分析需求（省的自己去想应该分析哪些数据）。电商平台的数据分析可以是另外一个话题。</li>
+</ul>
+<h2 id="实时数据分析"><a href="#实时数据分析" class="headerlink" title="实时数据分析"></a>实时数据分析</h2><blockquote>
+<p>对应的，有些时候会依赖实时的数据统计做一些策略，所以实时数据分析一般在开始阶段会做成准实时的。识别清楚数据分析的复杂度和需求的复杂度，控制好定时任务执行的粒度和时间。</p>
+</blockquote>
+<h2 id="在线的故障排查和离线的故障统计"><a href="#在线的故障排查和离线的故障统计" class="headerlink" title="在线的故障排查和离线的故障统计"></a>在线的故障排查和离线的故障统计</h2><ul>
+<li>服务的稳定性可以通过故障统计来衡量，所以分析，故障排查和监控是三个逻辑独立又互相关联的话题，大的架构上来说肯定是应该分别独立出来的。</li>
+<li>在线排查已经有很多成熟的架构，现在用的ELK就是很好的:)。建议用熟一套架构就好，因为在线排查需要经验和技巧结合，有很多技巧是取决于客观条件的，可能不太好变更。</li>
+<li>在线排查也需要结合在日志中埋好点来做。另外可能定义好异常处理的机制（许多新的框架都会定义好异常处理的逻辑，并且会收集未处理的异常，这块也要作为架构选型的一个考虑点）</li>
+<li>可以采用一些方式来主动把异常通过邮件、推送等形式来暴露出来。以便及时发现并且排查故障。第三方的工具也有很多。（比如我们在用的dataDog）</li>
+<li>在线排查很重要的就是要在日志中记录关键信息，控制好日志的规模，以减少整个系统的日志负载。尤其对于大规模系统架构，日志一定要设计的优雅，有效。（他应该告诉你你需要完成的工作的最少的信息。）需要记的都要记录，不需要记录的就不记录。</li>
+<li>log4j或者类似的日志处理的基础设施，要研究清楚他们的能力。;)</li>
+<li>离线的故障统计可以算是另一个层面的日志数据分析。原则上和处理方式上和日志数据分析一致，不再多说。目标则是为了度量系统的可用性方面的问题。可以结合其他系统度量指标一起来分析。一般维度就包括请求响应时间（客户端的），请求处理时间(服务器端的)，成功率。。。这个不用详细说了。</li>
+<li>离线故障统计和处理优先级应该是挺高的。</li>
+</ul>
+<h2 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h2><ul>
+<li>在线排查和监控有时候可以使用同样的工具和类同的流程，但是一定是两个层面的东西，都需要考虑。</li>
+<li>监控一般可以由开发和运维商量起来做。同样也是识别好需求复杂度，指标的严重程度，避免监控信息过度或者不足。一开始就制定好原则，工作就会好开展很多。（一般一开始很容易全部都给报出来，出个小错也报警，就会很耽误团队的精力）（比如请求连续10次出现超时邮件报警，20次超时短信报警，确定好度量的指标和对应的预警机制。然后每小时给出一个统计数据，，诸如此类的）</li>
+</ul>
+<blockquote>
+<p>另外，总体来说，工具很多，选择一个比较能覆盖上述维度的，减少在各个环节的切换也很重要。我们现在就用腾讯的企业邮箱，加上微信绑定提示，直接将许多预警的东西都放到里面了。这样更有利于大家建立统一的沟通机制，减少工作的复杂度。</p>
+</blockquote>
+<p><!--<span id="busuanzi_container_page_pv">
+   阅读量<span id="busuanzi_value_page_pv"></span>次
+</span>--></p>
+
+      
+    </div>
+
+    <!-- add by ling -->
+    <div>
+      
+        <div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>版权声明</span></p>
+  <p><span>本文标题:</span>6-日志分析和故障排查的若干意见</p>
+  <p><span>文章作者:</span>盛领</p>
+  <p><span>发布时间:</span>2017年01月05日 - 00:32:18</p>
+  <!--<p><span>最后更新:</span>2019年09月17日 - 10:52:36</p>-->
+  <p><span>原始链接:</span><a href="/post/2b36c5a8.html" title="6-日志分析和故障排查的若干意见">http://blog.xiaoyuyu.net/post/2b36c5a8.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/2b36c5a8.html" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+  <p>如您有任何商业合作或者授权方面的协商，请给我留言：<a href="mailto: sunsetxiao@126.com">sunsetxiao@126.com</a></p>
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+      
+    </div>
+    <!-- //end -->
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/img/wechat-mp-qcode.jpg" alt="盛领 wechat" style="width: 200px; max-width: 100%;">
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechatpay_sl.png" alt="盛领 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/img/alipay_sl.jpeg" alt="盛领 Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/log/" rel="tag"><i class="fa fa-tag"></i> log</a>
+          
+            <a href="/tags/日志分析/" rel="tag"><i class="fa fa-tag"></i> 日志分析</a>
+          
+            <a href="/tags/数据分析/" rel="tag"><i class="fa fa-tag"></i> 数据分析</a>
+          
+            <a href="/tags/监控/" rel="tag"><i class="fa fa-tag"></i> 监控</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/457bf861.html" rel="next" title="31-mysql双主多从配置">
+                <i class="fa fa-chevron-left"></i> 31-mysql双主多从配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/e3f0a45a.html" rel="prev" title="21-2016年度总结-做点什么让自己骄傲">
+                21-2016年度总结-做点什么让自己骄傲 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://blog.xiaoyuyu.net/img/avtar.jpg" alt="盛领">
+          <p class="site-author-name" itemprop="name">盛领</p>
+          <p class="site-description motion-element" itemprop="description">技术宅,架构,Java,历史,地理,天文</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">78</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">143</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sunsetyan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/ling.sheng.752" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zaih.com/mentor/85254499/" target="_blank" title="在行">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  在行
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://geek.xiaoyuyu.net/" title="演" target="_blank">演</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://redteamobile.com/" title="红茶移动" target="_blank">红茶移动</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://zyan.cc/" title="张宴的博客" target="_blank">张宴的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://lionheartwang.github.io/" title="一光的博客" target="_blank">一光的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gaigaiming.com/" title="改改名" target="_blank">改改名</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <br>
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/2.js?i=5xxeaiks0u6&amp;m=7&amp;s=178&amp;c=ff0000&amp;t=1" async="async"></script>
+
+<br>
+
+<hr>
+
+<div>
+<iframe width="216" height="512" class="share_self" frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=216&height=512&fansRow=2&ptype=1&speed=0&skin=10&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=6222531012&verifier=92d11e18&dpc=1"></iframe>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#日志分析和故障排查的若干意见"><span class="nav-number">1.</span> <span class="nav-text">日志分析和故障排查的若干意见</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志数据分析需要进行的准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">日志数据分析需要进行的准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不同数据规模采用的分析方案建议如下。"><span class="nav-number">1.3.</span> <span class="nav-text">不同数据规模采用的分析方案建议如下。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志分析的需求点"><span class="nav-number">1.4.</span> <span class="nav-text">日志分析的需求点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实时数据分析"><span class="nav-number">1.5.</span> <span class="nav-text">实时数据分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在线的故障排查和离线的故障统计"><span class="nav-number">1.6.</span> <span class="nav-text">在线的故障排查和离线的故障统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监控"><span class="nav-number">1.7.</span> <span class="nav-text">监控</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2003 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">盛领</span>
+  <!--<span id="busuanzi_container_site_uv" class="author"> 
+    本站访客数 <span id="busuanzi_value_site_uv"></span>人次
+  </span> busuanziguale-->
+  <a href="http://www.miitbeian.gov.cn">京ICP备15045082号-1</a>
+  
+</div>
+<div class="copyright">
+<p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1262345012'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262345012%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script></p>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<!-- 3d -->
+
+<script type="text/javascript" color="0,0,0" opacity="0.67" zindex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":128,"height":256},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

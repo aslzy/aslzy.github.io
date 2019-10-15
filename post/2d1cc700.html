@@ -1,0 +1,907 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="容器,源代码解析,code,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小皮博客 | Xiaopi's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="1. Web容器实现机制分析1.1 micro httpd在linux平台下运行,依赖于xinet,具体安装方式请《4-参考最简洁的Web中间件micro_httpd安装指南》">
+<meta name="keywords" content="容器,源代码解析,code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10-micro-httpd源代码解析">
+<meta property="og:url" content="http://blog.xiaoyuyu.net/post/2d1cc700.html">
+<meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
+<meta property="og:description" content="1. Web容器实现机制分析1.1 micro httpd在linux平台下运行,依赖于xinet,具体安装方式请《4-参考最简洁的Web中间件micro_httpd安装指南》">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-17T02:52:36.314Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="10-micro-httpd源代码解析">
+<meta name="twitter:description" content="1. Web容器实现机制分析1.1 micro httpd在linux平台下运行,依赖于xinet,具体安装方式请《4-参考最简洁的Web中间件micro_httpd安装指南》">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/2d1cc700.html">
+
+
+
+
+
+  <title> 10-micro-httpd源代码解析 | 小皮博客 | Xiaopi's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-122492745-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1262345012&web_id=1262345012" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小皮博客 | Xiaopi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">没有人的梦想会更卑微,做点什么让自己骄傲</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/projects/library.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            menu.bookmark
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-library">
+          <a href="/library" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            menu.library
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/2d1cc700.html">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="盛领">
+    <meta itemprop="description" content>
+    <meta itemprop="image" content="https://blog.xiaoyuyu.net/img/avtar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小皮博客 | Xiaopi's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="小皮博客 | Xiaopi's Blog" src>
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                10-micro-httpd源代码解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-02-01T14:55:41+08:00">
+                2015-02-01
+              </time>
+            
+
+            
+
+            <span class="post-meta-divider">|</span>
+            <span title="post.wordcount">
+              1,907 字
+            </span>
+            <span title="post.min2read">
+              需要阅读: 22 分钟
+            </span>
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/术业专攻/" itemprop="url" rel="index">
+                    <span itemprop="name">术业专攻</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-Web容器实现机制分析"><a href="#1-Web容器实现机制分析" class="headerlink" title="1. Web容器实现机制分析"></a>1. Web容器实现机制分析</h1><h2 id="1-1-micro-httpd在linux平台下运行-依赖于xinet-具体安装方式请《4-参考最简洁的Web中间件micro-httpd安装指南》"><a href="#1-1-micro-httpd在linux平台下运行-依赖于xinet-具体安装方式请《4-参考最简洁的Web中间件micro-httpd安装指南》" class="headerlink" title="1.1 micro httpd在linux平台下运行,依赖于xinet,具体安装方式请《4-参考最简洁的Web中间件micro_httpd安装指南》"></a>1.1 micro httpd在linux平台下运行,依赖于xinet,具体安装方式请<a href="http://blog.xiaoyuyu.net/2015/01/23/4-%E6%9C%80%E7%AE%80%E6%B4%81%E7%9A%84Web%E4%B8%AD%E9%97%B4%E4%BB%B6micro-httpd%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">《4-参考最简洁的Web中间件micro_httpd安装指南》</a></h2><a id="more"></a>
+<h1 id="2-micro-httpd源代码解析"><a href="#2-micro-httpd源代码解析" class="headerlink" title="2. micro httpd源代码解析"></a>2. micro httpd源代码解析</h1><p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br></pre></td><td class="code"><pre><span class="line">/* micro_httpd */</span><br><span class="line"></span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;dirent.h&gt;</span><br><span class="line">#include &lt;ctype.h&gt;</span><br><span class="line">#include &lt;time.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;sys/stat.h&gt;</span><br><span class="line"></span><br><span class="line">#define SERVER_NAME &quot;micro_httpd&quot;</span><br><span class="line">#define SERVER_URL &quot;http://www.acme.com/software/micro_httpd/&quot;</span><br><span class="line">/** 定义支持的HTTP协议 */</span><br><span class="line">#define PROTOCOL &quot;HTTP/1.0&quot;</span><br><span class="line">/** 定义时间格式 */</span><br><span class="line">#define RFC1123FMT &quot;%a, %d %b %Y %H:%M:%S GMT&quot;</span><br><span class="line"></span><br><span class="line">/* 前置进行函数定义,对于非编译型语言开发者来说,需要理解编译/解释等基本的编译器原理 */</span><br><span class="line">static void file_details( char* dir, char* name );</span><br><span class="line">static void send_error( int status, char* title, char* extra_header, char* text );</span><br><span class="line">static void send_headers( int status, char* title, char* extra_header, char* mime_type, off_t length, time_t mod );</span><br><span class="line">static char* get_mime_type( char* name );</span><br><span class="line">static void strdecode( char* to, char* from );</span><br><span class="line">static int hexit( char c );</span><br><span class="line">static void strencode( char* to, size_t tosize, const char* from );</span><br><span class="line"></span><br><span class="line">int main( int argc, char** argv ) &#123;</span><br><span class="line">    char line[10000], method[10000], path[10000], protocol[10000], idx[20000], location[20000];</span><br><span class="line">    char* file;</span><br><span class="line">    size_t len;</span><br><span class="line">    int ich;</span><br><span class="line">    struct stat sb;</span><br><span class="line">    FILE* fp;</span><br><span class="line">    struct dirent **dl;</span><br><span class="line">    int i, n;</span><br><span class="line">    </span><br><span class="line">    if ( argc != 2) /*需要指明根目录,在/etc/xinetd.d/micro_httpd配置参数server_args 取值可以为对应apache的&apos;/var/www/html&apos; */</span><br><span class="line">        send_error( 500, &quot;Internal Error&quot;, (char*) 0, &quot;Config error - no dir specified.配置出错了,没有指定路径&quot; );</span><br><span class="line">    if ( chdir( argv[1] ) &lt; 0)</span><br><span class="line">        send_error( 500, &quot;Internal Error&quot;, (char*) 0, &quot;Config error - couldn&apos;t chdir().配置出错了,无法chdir()&quot; );</span><br><span class="line">    if ( fgets(line, sizeof(line), stdin ) == (char*) 0)</span><br><span class="line">        send_error( 400, &quot;Bad Request&quot;, (char*) 0, &quot;No request found. 没有找到请求&quot; );</span><br><span class="line">    /** 提取路径`方法`协议 */</span><br><span class="line">    if ( sscanf( line, &quot;%[^ ] %[^ ] %[^ ]&quot;, method, path, protocol ) != 3 ) </span><br><span class="line">        send_error( 400, &quot;Bad Request&quot;, (char*) 0, &quot;Can&apos;t parse request. 无法解析请求&quot; );</span><br><span class="line"></span><br><span class="line">    /** 读取到请求头结束 */</span><br><span class="line">    while ( fgets( line, sizeof(line), stdin ) != (char*) 0) &#123;</span><br><span class="line">        if ( strcmp( line, &quot;\n&quot; ) == 0 || strcmp( line, &quot;\r\n&quot; ) == 0)</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /** micro_httpd只支持get请求 */</span><br><span class="line">    if (strcasecmp( method, &quot;get&quot; ) != 0)</span><br><span class="line">        send_error(501, &quot;Not Implemanted&quot;, (char*) 0, &quot;该方法尚未实现.&quot; );</span><br><span class="line">    if (path[0] != &apos;/&apos;) /** 一切从简,路径名称以斜杠开头 */</span><br><span class="line">        send_error(400, &quot;Bad Request&quot;, (char*) 0, &quot;Bad filename.&quot;);</span><br><span class="line">    file = &amp;(path[1]);</span><br><span class="line">    /** 浏览器传递过来的请求字符串是经过UrlEncoding的,所以这里要解析一下 */</span><br><span class="line">    strdecode(file, file);</span><br><span class="line">    if (file[0] == &apos;\0&apos;)</span><br><span class="line">        file = &quot;./&quot;;</span><br><span class="line">    len = strlen( file );</span><br><span class="line">    /** 检查路径是否会超过定义的根目录,超过根目录则存在越界风险: Web容器的基本功能吧! 实现非常简单,否则跟直接访问文件没区别了 */</span><br><span class="line">    if ( file[0] == &apos;/&apos; || </span><br><span class="line">         strcmp( file, &quot;..&quot;) == 0 || </span><br><span class="line">         strncmp( file, &quot;../&quot;, 3) == 0 || </span><br><span class="line">         strstr( file, &quot;/../&quot;) != (char*) 0 || </span><br><span class="line">         strcmp( &amp;(file[len-3]), &quot;/..&quot; ) == 0)</span><br><span class="line">        send_error(400, &quot;Bad Request&quot;, (char*) 0, &quot;Illegal filename.&quot; );</span><br><span class="line">    /** 接下来就是各种报错了,比如404神马的 */</span><br><span class="line">    if(stat( file, &amp;sb) &lt; 0 )</span><br><span class="line">        send_error(404, &quot;Not Found&quot;, (char*) 0, &quot;File not found.&quot;);</span><br><span class="line">    if (S_ISDIR( sb.st_mode) ) &#123;</span><br><span class="line">        /** 目录名要以斜杠结尾 */</span><br><span class="line">        if ( file[len-1] != &apos;/&apos;) &#123;</span><br><span class="line">            (void) snprintf(</span><br><span class="line">                location, sizeof(location), &quot;Location: %s/&quot;, path);</span><br><span class="line">            send_error( 302, &quot;Found&quot;, location, &quot;Directories must end with a slash.&quot; );</span><br><span class="line">        &#125;</span><br><span class="line">        (void) snprintf(idx, sizeof(idx), &quot;%sindex.html&quot;, file);</span><br><span class="line">        /** 目录名称下有index.html则返回index.html */</span><br><span class="line">        if (stat(idx, &amp;sb) &gt;= 0) &#123;</span><br><span class="line">            file = idx;</span><br><span class="line">            goto do_file;</span><br><span class="line">        &#125;</span><br><span class="line">        send_headers(200, &quot;OK&quot;, (char*)0, &quot;text/html&quot;, -1, sb.st_mtime);</span><br><span class="line">        (void) printf(&quot;\</span><br><span class="line">&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD HTML 4.01 Transitional//EN\&quot; \&quot;http://www.w3.org/TR/html4/loose.dtd\&quot;&gt;\n\</span><br><span class="line">&lt;html&gt;\n\</span><br><span class="line">  &lt;head&gt;\n\</span><br><span class="line">    &lt;meta http-equiv=\&quot;Content-type\&quot; content=\&quot;text/html;charset=UTF-8\&quot;&gt;\n\</span><br><span class="line">    &lt;title&gt;Index Of %s&lt;/title&gt;\n\</span><br><span class="line">  &lt;/head&gt;\n\</span><br><span class="line">  &lt;body bgcolor=\&quot;#99cc99\&quot;&gt;\n\</span><br><span class="line">    &lt;h4&gt;Index of %s&lt;/h4&gt;\n\</span><br><span class="line">    &lt;pre&gt;\n&quot;, file, file);</span><br><span class="line">         n = scandir(file, &amp;dl, NULL, alphasort);</span><br><span class="line">         if (n &lt; 0)</span><br><span class="line">              perror( &quot;scandir&quot;);</span><br><span class="line">         else</span><br><span class="line">            for (i = 0; i &lt; n; ++i)</span><br><span class="line">                file_details(file, dl[i]-&gt;d_name);</span><br><span class="line">         (void) printf(&quot;\</span><br><span class="line">    &lt;/pre&gt;\n\</span><br><span class="line">    &lt;hr&gt;\n\</span><br><span class="line">    &lt;address&gt;&lt;a href=\&quot;%s\&quot;&gt;%s&lt;/a&gt;&lt;/address&gt;\n\</span><br><span class="line">  &lt;/body&gt;\n\</span><br><span class="line">&lt;/html&gt;\n&quot;, SERVER_URL, SERVER_NAME );</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        do_file:/** 读取文件内容并且写入到端口对应的通道当中 */</span><br><span class="line">        fp = fopen(file, &quot;r&quot;);</span><br><span class="line">        if (fp == (FILE*) 0)</span><br><span class="line">            send_error( 403, &quot;Forbidden&quot;, (char*) 0, &quot;File is protected. &quot; );</span><br><span class="line">        send_headers(200, &quot;OK&quot;, (char*)0, get_mime_type(file), sb.st_size, sb.st_mtime );</span><br><span class="line">        while( ( ich = getc( fp )) != EOF )</span><br><span class="line">            putchar( ich );</span><br><span class="line">    &#125; /* end else */</span><br><span class="line">    </span><br><span class="line">    (void) fflush( stdout);</span><br><span class="line">    exit(0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** 获取文件的详细信息,并且响应超链接 */</span><br><span class="line">static void</span><br><span class="line">file_details(char* dir, char* name) &#123;</span><br><span class="line">    static char encoded_name[1000];</span><br><span class="line">    static char path[2000];</span><br><span class="line">    struct stat sb;</span><br><span class="line">    char timestr[16];</span><br><span class="line"></span><br><span class="line">    strencode( encoded_name, sizeof(encoded_name), name );</span><br><span class="line">    (void) snprintf( path, sizeof(path), &quot;%s/%s&quot;, dir, name);</span><br><span class="line">    if (lstat( path, &amp;sb) &lt; 0)</span><br><span class="line">        (void) printf(&quot;&lt;a href=\&quot;%s\&quot;&gt;%-32.32s&lt;/a&gt;    ???\n&quot;, encoded_name, name);</span><br><span class="line">    else &#123;</span><br><span class="line">        (void) strftime( timestr, sizeof(timestr), &quot;%d%b%Y %H:%M&quot;, localtime( &amp;sb.st_mtime));</span><br><span class="line">        (void) printf( &quot;&lt;a href=\&quot;%s\&quot;&gt;%-32.32s&lt;/a&gt;   %15s %14lld\n&quot;, encoded_name, name, timestr, (long long) sb.st_size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** 工具方法: 出错时,发送错误响应信息,传递值过来就会生成相对应的报错页面,这里采用的是字符串替换的方法 */</span><br><span class="line">static void </span><br><span class="line">send_error(int status, char* title, char* extra_header, char* text) &#123;</span><br><span class="line">    send_headers( status, title, extra_header, &quot;text/html&quot;, -1, -1);</span><br><span class="line">    (void) printf(&quot;\</span><br><span class="line">&lt;!DOCTYPE&gt;\n\</span><br><span class="line">&lt;html&gt;\n\</span><br><span class="line">  &lt;head&gt;\n\</span><br><span class="line">    &lt;meta http-equiv=\&quot;Content-type\&quot; content=\&quot;text/html;charset=UTF-8\&quot;&gt;\n\</span><br><span class="line">    &lt;title&gt;%d %s&lt;/title&gt;\n\</span><br><span class="line">  &lt;/head&gt;\n\</span><br><span class="line">  &lt;body bgcolor=\&quot;#cc9999\&quot;&gt;\n\</span><br><span class="line">    &lt;h4&gt;%d %s&lt;/h4&gt;\n&quot;, status, title, status, title);</span><br><span class="line">    (void)printf(&quot;%s\n&quot;, text);</span><br><span class="line">    (void)printf(&quot;\</span><br><span class="line">  &lt;hr&gt;\n\</span><br><span class="line">  &lt;address&gt;&lt;a href=\&quot;%s\&quot;&gt;%s&lt;/a&gt;&lt;/address&gt;\n\</span><br><span class="line"> &lt;/body&gt;\n\</span><br><span class="line">&lt;/html&gt;\n&quot;, SERVER_URL, SERVER_NAME);</span><br><span class="line">    (void) fflush(stdout);</span><br><span class="line">    exit( 1 );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** 发送http响应头部信息, 因为本质上也是和拿Socket套接字拼接文件流是一样一样的 */</span><br><span class="line">static void </span><br><span class="line">send_headers(int status, char* title, char* extra_header, char* mime_type, off_t length, time_t mod) &#123;</span><br><span class="line">    time_t now;</span><br><span class="line">    char timebuf[100];</span><br><span class="line">    </span><br><span class="line">    (void)printf(&quot;%s %d %s\015\012&quot;, PROTOCOL, status, title); // 协议,状态,标题</span><br><span class="line">    (void)printf(&quot;Server: %s\015\012&quot;, SERVER_NAME); // Server字段</span><br><span class="line">    now = time( (time_t*) 0);</span><br><span class="line">    (void) strftime( timebuf, sizeof(timebuf), RFC1123FMT, gmtime(&amp;now));</span><br><span class="line">    (void) printf( &quot;Date: %s\015\012&quot;, timebuf);</span><br><span class="line">    if (extra_header != (char*) 0)</span><br><span class="line">        (void)printf(&quot;%s\015\012&quot;, extra_header);</span><br><span class="line">    if (mime_type != (char*)0)</span><br><span class="line">        (void)printf(&quot;Content-Type: %s\015\012&quot;, mime_type);</span><br><span class="line">    if (length &gt;=0 )</span><br><span class="line">        (void)printf(&quot;Content-Length: %lld\015\012&quot;, (long long)length);</span><br><span class="line">    if (mod != (time_t) - 1) &#123;</span><br><span class="line">        (void)strftime( timebuf, sizeof(timebuf), RFC1123FMT, gmtime(&amp;mod));</span><br><span class="line">        (void)printf(&quot;Last-Modified: %s\015\012&quot;, timebuf);</span><br><span class="line">    &#125;</span><br><span class="line">    (void) printf(&quot;Connection: close\015\012&quot;);</span><br><span class="line">    (void) printf(&quot;\015\012&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** 分析文件名后缀,获取mime类型 */</span><br><span class="line">static char*</span><br><span class="line">get_mime_type( char* name) &#123;</span><br><span class="line">    char* dot;</span><br><span class="line">    </span><br><span class="line">    dot = strrchr(name, &apos;.&apos;);</span><br><span class="line">    if (dot == (char*)0)</span><br><span class="line">        return &quot;text/plain; charset=UTF-8&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.html&quot; ) == 0 || strcmp(dot, &quot;.htm&quot;) == 0)</span><br><span class="line">        return &quot;text/html;charset=UTF-8&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.xhtml&quot;) == 0 || strcmp(dot, &quot;.xht&quot;) == 0)</span><br><span class="line">        return &quot;application/xhtml+xml; charset=UTF-8&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.jpg&quot;) == 0 || strcmp(dot, &quot;.jpeg&quot;) == 0)</span><br><span class="line">        return &quot;image/jpeg&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.gif&quot;) == 0)</span><br><span class="line">        return &quot;image/gif&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.png&quot;) == 0)</span><br><span class="line">        return &quot;image/png&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.css&quot;) == 0)</span><br><span class="line">        return &quot;text/css&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.xml&quot;) == 0 || strcmp(dot, &quot;.xsl&quot;) == 0)</span><br><span class="line">        return &quot;text/xml; charset=UTF-8&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.json&quot;) == 0)</span><br><span class="line">        return &quot;text/json; charset=UTF-8&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.au&quot;) == 0)</span><br><span class="line">        return &quot;audio/basic&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.wav&quot;) == 0)</span><br><span class="line">        return &quot;audio/wav&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.avi&quot;) == 0)</span><br><span class="line">        return &quot;video/x-msvideo&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.mov&quot;) == 0 || strcmp(dot, &quot;.qt&quot;) == 0)</span><br><span class="line">        return &quot;video/quicktime&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.mpeg&quot;) == 0 || strcmp(dot, &quot;.mpe&quot;) == 0)</span><br><span class="line">        return &quot;video/mpeg&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.vrml&quot;) == 0 || strcmp(dot, &quot;.wrl&quot;) == 0)</span><br><span class="line">        return &quot;model/vrml&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.midi&quot;) == 0 || strcmp(dot, &quot;.mid&quot;) == 0)</span><br><span class="line">        return &quot;audio/midi&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.mp3&quot;) == 0)</span><br><span class="line">        return &quot;audio/mpeg&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.ogg&quot;) == 0)</span><br><span class="line">        return &quot;application/ogg&quot;;</span><br><span class="line">    if (strcmp(dot, &quot;.pac&quot;) == 0)</span><br><span class="line">        return &quot;application/x-ns-proxy-autoconfig&quot;;</span><br><span class="line">    return &quot;text/plain; charset=UTF-8&quot;; /**其他一律认为是字节流*/</span><br><span class="line">        </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** 对路径名进行解码URLDecoding */</span><br><span class="line">static void</span><br><span class="line">strdecode( char* to, char* from) &#123;</span><br><span class="line">    for (; *from != &apos;\0&apos;; ++to, ++from) &#123;</span><br><span class="line">        if (from[0] == &apos;%&apos; &amp;&amp; isxdigit(from[1]) &amp;&amp; isxdigit(from[2])) &#123;</span><br><span class="line">            *to = hexit(from[1]) * 16 + hexit(from[2]);</span><br><span class="line">            from += 2;/** 指针 */</span><br><span class="line">        &#125;</span><br><span class="line">        else </span><br><span class="line">            *to = * from;</span><br><span class="line">    &#125;</span><br><span class="line">    *to = &apos;\0&apos;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int</span><br><span class="line">hexit( char c )&#123;</span><br><span class="line">    if (c &gt;= &apos;0&apos; &amp;&amp; c &lt;= &apos;9&apos;)</span><br><span class="line">        return c - &apos;0&apos;;</span><br><span class="line">    if (c &gt;= &apos;a&apos; &amp;&amp; c &lt;= &apos;f&apos;)</span><br><span class="line">        return c - &apos;a&apos; + 10;</span><br><span class="line">    if (c &gt;= &apos;A&apos; &amp;&amp; c &lt;= &apos;F&apos;)</span><br><span class="line">        return c - &apos;A&apos; + 10;</span><br><span class="line">    return 0; /** Should never happen.*/</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** URL Encoding */</span><br><span class="line">static void</span><br><span class="line">strencode(char* to, size_t tosize, const char* from) &#123;</span><br><span class="line">    int tolen;</span><br><span class="line">    </span><br><span class="line">    for (tolen = 0; *from != &apos;\0&apos; &amp;&amp; tolen + 4 &lt; tosize; ++from)&#123;</span><br><span class="line">        if (isalnum(*from) || strchr( &quot;/_.-~&quot;, *from) != (char*) 0) &#123;</span><br><span class="line">            *to = * from;</span><br><span class="line">            ++to;</span><br><span class="line">            ++tolen;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            (void)sprintf(to, &quot;%%%02x&quot;, (int) *from &amp; 0xff);</span><br><span class="line">            to += 3;</span><br><span class="line">            tolen += 3;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    *to = &apos;\0&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p><!--<span id="busuanzi_container_page_pv">
+   阅读量<span id="busuanzi_value_page_pv"></span>次
+</span>--></p><p></p>
+
+      
+    </div>
+
+    <!-- add by ling -->
+    <div>
+      
+        <div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>版权声明</span></p>
+  <p><span>本文标题:</span>10-micro-httpd源代码解析</p>
+  <p><span>文章作者:</span>盛领</p>
+  <p><span>发布时间:</span>2015年02月01日 - 14:55:41</p>
+  <!--<p><span>最后更新:</span>2019年09月17日 - 10:52:36</p>-->
+  <p><span>原始链接:</span><a href="/post/2d1cc700.html" title="10-micro-httpd源代码解析">http://blog.xiaoyuyu.net/post/2d1cc700.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/2d1cc700.html" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+  <p>如您有任何商业合作或者授权方面的协商，请给我留言：<a href="mailto: sunsetxiao@126.com">sunsetxiao@126.com</a></p>
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+      
+    </div>
+    <!-- //end -->
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/img/wechat-mp-qcode.jpg" alt="盛领 wechat" style="width: 200px; max-width: 100%;">
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechatpay_sl.png" alt="盛领 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/img/alipay_sl.jpeg" alt="盛领 Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/容器/" rel="tag"><i class="fa fa-tag"></i> 容器</a>
+          
+            <a href="/tags/源代码解析/" rel="tag"><i class="fa fa-tag"></i> 源代码解析</a>
+          
+            <a href="/tags/code/" rel="tag"><i class="fa fa-tag"></i> code</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/7054c0dc.html" rel="next" title="2-自己动手写操作系统-使用vmware运行Linux内核">
+                <i class="fa fa-chevron-left"></i> 2-自己动手写操作系统-使用vmware运行Linux内核
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/6b8fd752.html" rel="prev" title="15-网页中meta标签详解">
+                15-网页中meta标签详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://blog.xiaoyuyu.net/img/avtar.jpg" alt="盛领">
+          <p class="site-author-name" itemprop="name">盛领</p>
+          <p class="site-description motion-element" itemprop="description">技术宅,架构,Java,历史,地理,天文</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">78</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">143</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sunsetyan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/ling.sheng.752" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zaih.com/mentor/85254499/" target="_blank" title="在行">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  在行
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://geek.xiaoyuyu.net/" title="演" target="_blank">演</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://redteamobile.com/" title="红茶移动" target="_blank">红茶移动</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://zyan.cc/" title="张宴的博客" target="_blank">张宴的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://lionheartwang.github.io/" title="一光的博客" target="_blank">一光的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gaigaiming.com/" title="改改名" target="_blank">改改名</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <br>
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/2.js?i=5xxeaiks0u6&amp;m=7&amp;s=178&amp;c=ff0000&amp;t=1" async="async"></script>
+
+<br>
+
+<hr>
+
+<div>
+<iframe width="216" height="512" class="share_self" frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=216&height=512&fansRow=2&ptype=1&speed=0&skin=10&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=6222531012&verifier=92d11e18&dpc=1"></iframe>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Web容器实现机制分析"><span class="nav-number">1.</span> <span class="nav-text">1. Web容器实现机制分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-micro-httpd在linux平台下运行-依赖于xinet-具体安装方式请《4-参考最简洁的Web中间件micro-httpd安装指南》"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 micro httpd在linux平台下运行,依赖于xinet,具体安装方式请《4-参考最简洁的Web中间件micro_httpd安装指南》</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-micro-httpd源代码解析"><span class="nav-number">2.</span> <span class="nav-text">2. micro httpd源代码解析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2003 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">盛领</span>
+  <!--<span id="busuanzi_container_site_uv" class="author"> 
+    本站访客数 <span id="busuanzi_value_site_uv"></span>人次
+  </span> busuanziguale-->
+  <a href="http://www.miitbeian.gov.cn">京ICP备15045082号-1</a>
+  
+</div>
+<div class="copyright">
+<p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1262345012'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262345012%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script></p>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<!-- 3d -->
+
+<script type="text/javascript" color="0,0,0" opacity="0.67" zindex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":128,"height":256},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
