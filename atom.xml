@@ -117,6 +117,34 @@
   </entry>
   
   <entry>
+    <title>94-neo4j基础教程</title>
+    <link href="http://blog.xiaoyuyu.net/post/84a86b35.html"/>
+    <id>http://blog.xiaoyuyu.net/post/84a86b35.html</id>
+    <published>2019-11-29T02:52:55.000Z</published>
+    <updated>2020-06-13T17:41:43.339Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>知识图谱（Knowledge Graph），在图书情报界称为知识域可视化或知识领域映射地图，是显示知识发展进程与结构关系的一系列各种不同的图形，用 可视化技术描述知识资源及其载体，挖掘、分析、 构建、绘制和显示知识及它们之间的相互联系。 知识图谱是通过将应用数学、 图形学、信息可视化技术、 信息科学等学科的理论与方法与计量学引文分析、共现分析等方法结合，并利用可视化的图谱形象地展示学科的核心结构、发展历史、 前沿领域以及整体知识架构达到多学科融合目的的现代理论。它能为学科研究提供切实的、有价值的参考。而Neo4j是目前比较主流的构建知识图谱的存储方式。</p><a id="more"></a><h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>官网 <a href="https://neo4j.com/" target="_blank" rel="noopener">https://neo4j.com/</a> 下载并且解压：/Users/shengl/2-sys-ai/neo4j-3.5.12</p><blockquote><p>进入目录/Users/shengl/2-sys-ai/neo4j-3.5.12/bin/<br>./neo4j start  来运行 </p></blockquote><pre>Active database: officialdemo.dbDirectories in use:  home:         /Users/shengl/2-sys-ai/neo4j-3.5.12  config:       /Users/shengl/2-sys-ai/neo4j-3.5.12/conf  logs:         /Users/shengl/2-sys-ai/neo4j-3.5.12/logs  plugins:      /Users/shengl/2-sys-ai/neo4j-3.5.12/plugins  import:       /Users/shengl/2-sys-ai/neo4j-3.5.12/import  data:         /Users/shengl/2-sys-ai/neo4j-3.5.12/data  certificates: /Users/shengl/2-sys-ai/neo4j-3.5.12/certificates  run:          /Users/shengl/2-sys-ai/neo4j-3.5.12/run</pre><h1 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h1><h2 id="进入运行时环境"><a href="#进入运行时环境" class="headerlink" title="进入运行时环境"></a>进入运行时环境</h2><blockquote><p>访问 <a href="http://127.0.0.1:7474/browser/" target="_blank" rel="noopener">http://127.0.0.1:7474/browser/</a><br>默认账号密码是neo4j<br>登录后的界面如下:  </p></blockquote><p><img src="/img/2020/2020-06-14-01.jpg" alt></p><blockquote><p>neo4j提供了类似SQL的声明式命令，用户可以通过命令对neo4j进行基本操作，如<br>创建、更新、删除节点和关系<br>通过模式匹配来查询和修改节点和关系<br>管理索引和约束等。<br>neo4j的核心是节点而不是数据条目。</p></blockquote><h2 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h2><ul><li>语法说明： CREATE创建操作，Person是标签,代表节点的类型。{}括号里面代表节点的属性。</li></ul><blockquote><p>CREATE (n:Person {name:’姚明’}) RETURN n<br>创建一个标签为Person的节点，该节点有一个属性name，这个属性的值是姚明；执行后，可以看到创建成功的节点。</p></blockquote><ul><li>继续创建节点。  </li></ul><blockquote><p>CREATE (n:Person {name:’特雷西·麦克格雷迪’}) RETURN n<br>CREATE (n:Person {name:’易建联’}) RETURN n<br>CREATE (n:Person {name:’叶莉’}) RETURN n<br>CREATE (n:Person {name:’杰夫·范甘迪’}) RETURN n<br>CREATE (n:Person {name:’路易斯·斯科拉’}) RETURN n<br>CREATE (n:Person {name:’大卫·斯特恩’}) RETURN n<br>CREATE (n:Person {name:’莱斯利·亚历山大’}) RETURN n   </p></blockquote><ul><li>插入之后的效果:</li></ul><p><img src="/img/2020/2020-06-14-02.jpg" alt></p><h2 id="创建地区节点"><a href="#创建地区节点" class="headerlink" title="创建地区节点"></a>创建地区节点</h2><blockquote><p>CREATE (n:Location {city:’休斯顿’, country:’USA’})<br>CREATE (n:Location {city:’上海’, country:’CHINA’})<br>CREATE (n:Location {city:’广州’, country:’CHINA’})<br>CREATE (n:Location {city:’纽约’, country:’USA’})  </p></blockquote><ul><li>插入之后的效果:</li></ul><p><img src="/img/2020/2020-06-14-03.jpg" alt></p><h2 id="创建关系"><a href="#创建关系" class="headerlink" title="创建关系"></a>创建关系</h2><ul><li>注意箭头是有方向的。</li></ul><blockquote><p>MATCH (a:Person {name:’姚明’}),  (b:Person {name:’特雷西·麦克格雷迪’}) MERGE (a)-[:FRIENDS]-&gt;(b)<br>MATCH (a:Person {name:’姚明’}),  (b:Person {name:’特雷西·麦克格雷迪’}) MERGE (b)-[:FRIENDS]-&gt;(a)</p></blockquote><ul><li>关系可以增加属性:比如姚明和斯科拉2006年开始成为队友。  </li></ul><blockquote><p>MATCH (a:Person {name:’姚明’}), (b:Person {name:’路易斯·斯科拉’}) MERGE (a)-[:TEAMATE {since:2006}]-&gt;(b)<br>MATCH (a:Person {name:’姚明’}), (b:Person {name:’路易斯·斯科拉’}) MERGE (b)-[:TEAMATE {since:2006}]-&gt;(a)  </p></blockquote><h2 id="建立人物和地点之间的关系"><a href="#建立人物和地点之间的关系" class="headerlink" title="建立人物和地点之间的关系"></a>建立人物和地点之间的关系</h2><ul><li>姚明1980年出生于上海。</li></ul><blockquote><p>MATCH (a:Person {name:’姚明’}), (b:Location {city:’上海’}) MERGE (a)-[:BORN_IN {year:1980}]-&gt;(b)</p></blockquote><ul><li>插入之后的效果:<br><img src="/img/2020/2020-06-14-04.jpg" alt></li></ul><h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><ul><li>查询下所有在上海出生的人物,按照目前的关系数据，只能查到姚明。</li></ul><blockquote><p>MATCH (a:Person)-[:BORN_IN]-&gt;(b:Location {city:’上海’}) RETURN a,b</p></blockquote><ul><li>查询所有有对外关系的节点: 可以查出姚明，麦迪和斯科拉。</li></ul><blockquote><p>MATCH (a)–&gt;() RETURN a</p></blockquote><ul><li>反过来，可以查询到姚明，麦迪，斯科拉，和上海:</li></ul><blockquote><p>MATCH (a)&lt;–() RETURN a</p></blockquote><ul><li>查询所有有关系的节点，同上面一样。</li></ul><blockquote><p>MATCH (a)–() RETURN a</p></blockquote><ul><li>查询所有对外有关系的节点，以及关系类型</li></ul><blockquote><p>MATCH (a)-[r]-&gt;() RETURN a.name, type(r)</p></blockquote><p>效果如下图:<br><img src="/img/2020/2020-06-14-05.jpg" alt></p><h2 id="创建节点的时候就创建好关系"><a href="#创建节点的时候就创建好关系" class="headerlink" title="创建节点的时候就创建好关系"></a>创建节点的时候就创建好关系</h2><blockquote><p>CREATE (a:Person {name:’刘翔’})-[r:FRIENDS]-&gt;(b:Person {name:’姚明’})</p></blockquote><h2 id="关联查询"><a href="#关联查询" class="headerlink" title="关联查询:"></a>关联查询:</h2><ul><li>查询麦迪的朋友姚明的队友</li></ul><blockquote><p>MATCH (a:Person {name:’特雷西·麦克格雷迪’})-[r1:FRIENDS]-()-[r2:TEAMATE]-(teamate_of_a_friend) RETURN teamate_of_a_friend.name AS tofName</p></blockquote><h2 id="增加-amp-修改节点属性"><a href="#增加-amp-修改节点属性" class="headerlink" title="增加&amp;修改节点属性"></a>增加&amp;修改节点属性</h2><ul><li>这里的SET表示修改操作</li></ul><blockquote><p>MATCH (a:Person {name:’姚明’}) SET a.age=40<br>MATCH (a:Person {name:’斯科拉’}) SET a.age=45<br>MATCH (a:Person {name:’姚明’}) SET a.age=44  </p></blockquote><ul><li>删除节点属性:删除属性操作主要通过REMOVE  </li></ul><blockquote><p>MATCH (a:Person {name:’姚明’}) SET a.role=’中国篮协主席’<br>MATCH (a:Person {name:’姚明’}) REMOVE a.role  </p></blockquote><h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><blockquote><p>MATCH (a:Location {city:’休斯顿’}) DELETE a</p></blockquote><ul><li>删除有关系的节点</li></ul><blockquote><p>MATCH (a:Person {name:’刘翔’})-[rel]-(b:Person) DELETE a,b,rel</p></blockquote><ul><li><p>删除前的效果:<br><img src="/img/2020/2020-06-14-06.jpg" alt></p></li><li><p>删除后的效果:<br><img src="/img/2020/2020-06-14-07.jpg" alt></p><p><!--<span id="busuanzi_container_page_pv"> 阅读量<span id="busuanzi_value_page_pv"></span>次</span>--></p></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;概览&quot;&gt;&lt;a href=&quot;#概览&quot; class=&quot;headerlink&quot; title=&quot;概览&quot;&gt;&lt;/a&gt;概览&lt;/h1&gt;&lt;p&gt;知识图谱（Knowledge Graph），在图书情报界称为知识域可视化或知识领域映射地图，是显示知识发展进程与结构关系的一系列各种不同的图形，用 可视化技术描述知识资源及其载体，挖掘、分析、 构建、绘制和显示知识及它们之间的相互联系。 知识图谱是通过将应用数学、 图形学、信息可视化技术、 信息科学等学科的理论与方法与计量学引文分析、共现分析等方法结合，并利用可视化的图谱形象地展示学科的核心结构、发展历史、 前沿领域以及整体知识架构达到多学科融合目的的现代理论。它能为学科研究提供切实的、有价值的参考。而Neo4j是目前比较主流的构建知识图谱的存储方式。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="术业专攻" scheme="http://blog.xiaoyuyu.net/categories/%E6%9C%AF%E4%B8%9A%E4%B8%93%E6%94%BB/"/>
+    
+    
+      <category term="知识图谱" scheme="http://blog.xiaoyuyu.net/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/"/>
+    
+      <category term="neo4j" scheme="http://blog.xiaoyuyu.net/tags/neo4j/"/>
+    
+      <category term="图数据库" scheme="http://blog.xiaoyuyu.net/tags/%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+      <category term="AI" scheme="http://blog.xiaoyuyu.net/tags/AI/"/>
+    
+  </entry>
+  
+  <entry>
     <title>93-数据库设计指南</title>
     <link href="http://blog.xiaoyuyu.net/post/17a93bf0.html"/>
     <id>http://blog.xiaoyuyu.net/post/17a93bf0.html</id>
@@ -494,30 +522,6 @@
       <category term="学习笔记" scheme="http://blog.xiaoyuyu.net/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
       <category term="Elastic Search" scheme="http://blog.xiaoyuyu.net/tags/Elastic-Search/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>73-金字塔原理-读书笔记</title>
-    <link href="http://blog.xiaoyuyu.net/post/55f1049a.html"/>
-    <id>http://blog.xiaoyuyu.net/post/55f1049a.html</id>
-    <published>2018-10-16T15:25:25.000Z</published>
-    <updated>2019-09-17T02:52:36.341Z</updated>
-    
-    <content type="html"><![CDATA[<p>如何系统的写作和表达？运用金字塔原理。本文就尝试用金字塔原理来构建。</p><a id="more"></a><h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近开始读书和写字，由于需要更好的学习，开始研究这两者的方法论，关于如何读书，个人已经有一些方法。但是关于如何写作，之前更多的是靠文艺的灵感。作为一个科技和科普的博客（而不是小说家），选定了《金字塔原理》这本书，来指导我的写作思路和逻辑。（其实这里把SCQA)都交待完了。</p><h2 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h2><p>正如背景中提到的，我需要更加严谨的思路来表达我最近学习到的诸多方法论。而不是之前的文章中徒有的那些形式。</p><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如何提升自己的逻辑思维能力，演讲材料和汇报材料的组织能力呢？</p><h2 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h2><p>金字塔原理是我找寻到并决定研究的诸多方法论中最有名的一个。</p><h1 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h1><p>构思的过程中，这篇文章应该取名为，《金字塔原理读书笔记》——&gt; 如何使用金字塔原理构造你的逻辑思维及写作汇报材料的骨架。</p><h1 id="搭框架"><a href="#搭框架" class="headerlink" title="搭框架"></a>搭框架</h1><h2 id="时间顺序"><a href="#时间顺序" class="headerlink" title="时间顺序"></a>时间顺序</h2><h2 id="空间顺序"><a href="#空间顺序" class="headerlink" title="空间顺序"></a>空间顺序</h2><h2 id="程度顺序"><a href="#程度顺序" class="headerlink" title="程度顺序"></a>程度顺序</h2><h1 id="定内容"><a href="#定内容" class="headerlink" title="定内容"></a>定内容</h1><h2 id="观点"><a href="#观点" class="headerlink" title="观点"></a>观点</h2><h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p><!--<span id="busuanzi_container_page_pv">   阅读量<span id="busuanzi_value_page_pv"></span>次</span>--></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;如何系统的写作和表达？运用金字塔原理。本文就尝试用金字塔原理来构建。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="术与道" scheme="http://blog.xiaoyuyu.net/categories/%E6%9C%AF%E4%B8%8E%E9%81%93/"/>
-    
-    
-      <category term="方法论" scheme="http://blog.xiaoyuyu.net/tags/%E6%96%B9%E6%B3%95%E8%AE%BA/"/>
-    
-      <category term="他山之石" scheme="http://blog.xiaoyuyu.net/tags/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3/"/>
     
   </entry>
   
