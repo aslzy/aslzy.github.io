@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.xiaoyuyu.net/"/>
-  <updated>2020-06-21T06:27:58.577Z</updated>
+  <updated>2020-07-04T17:05:49.581Z</updated>
   <id>http://blog.xiaoyuyu.net/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>102-【100种思维模型】-[1-机会成本]思维模型</title>
+    <link href="http://blog.xiaoyuyu.net/post/4dbaff59.html"/>
+    <id>http://blog.xiaoyuyu.net/post/4dbaff59.html</id>
+    <published>2020-07-04T16:30:05.000Z</published>
+    <updated>2020-07-04T17:05:49.581Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p><strong>定义</strong>： 机会成本是指在面临多个选择时，被舍弃的选项中最高价值(不一定是金钱的)是本次决策的机会成本,当然，你得需要等到复盘的时候才能看到。<br><strong>推论1</strong>： 没有“选项”就等于没有成本(如果你没有选择，其实等于没有成本)，一切成本都是机会的成本。   </p></blockquote><h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><h1 id="说明解读"><a href="#说明解读" class="headerlink" title="说明解读"></a>说明解读</h1><p>机会成本所指的机会必须是决策者可选择的项目，“不要说我本来可以..”，如果不是可选择的选项便不是机会。放弃的机会中的收益最高的项目才是机会成本，而不是所有放弃的可选项的收益的总和。而<strong>“沉没成本”</strong>是不能算作机会成本的。</p><p>机会成本是奥地利经济学家弗冯维塞尔在其《自然价值》中首先提出的。他通过分析成本定律，联系效用和成本，独创机会成本。他认为机会成本是潜在利益的减少<strong>而非实际发生的支出</strong>。</p><p>机会成本通常有显性机会成本和隐形机会成本组成。<br>显性机会成本：做出最优选择需要额外付出的成本，或者使用他人资源需要付给资源拥有者的货币代价。<br>隐形机会成本：使用自有资源而放弃的那个最大预期回报。</p><h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><h2 id="工作选择"><a href="#工作选择" class="headerlink" title="工作选择"></a>工作选择</h2><h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>笔者同时拿到了多个offer，A公司年薪120万,B公司年薪80万+60万/年的股票但是有条件(数学期望0.8）兑付,在B公司的时间要多每天2小时。</p><h3 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h3><p>假设其他要素相同(笔者之前做过一个工作机会的评估模型，但是这里为了讲述此思维模型先简化)，包括行业地位，公司规模，发展，职位话语权和未来机会相同。<br>那么，如果选择A公司任职，总的机会成本是：80万+60乘以0.8 = 128万<br>选择B公司任职，机会成本=120万+2小时乘以22天*12=120万+528小时</p><p>而考虑到单位时间的收益(不考虑加班带来的别的问题)，每小时单价是 120万/22乘以8乘以12 = 576/小时。实际上多付出的528小时时间是价值30万的，所以应该选择工作A。</p><h2 id="兼职与学习"><a href="#兼职与学习" class="headerlink" title="兼职与学习"></a>兼职与学习</h2><h3 id="场景-1"><a href="#场景-1" class="headerlink" title="场景"></a>场景</h3><p>平时日常有时间，可以考虑学习或者兼职。假设兼职可以每月赚5000元,每天需要2小时。而培训需要学费8000元/月，并且伙食费需要1000，住宿费需要2000.那么选择培训学习的机会成本是多少呢？</p><h3 id="解答-1"><a href="#解答-1" class="headerlink" title="解答"></a>解答</h3><p>机会成本=学费+住宿费（如果是额外的）+放弃兼职的收益 = 8800 + 2000 + 5000 = 15800。伙食费不应该当做机会成本，因为你本来就需要吃饭。如果伙食费有差价，可以算到机会成本里面。如果与放弃的东西无关，就不应该作为机会成本。</p><h2 id="感情取舍"><a href="#感情取舍" class="headerlink" title="感情取舍"></a>感情取舍</h2><h3 id="场景-2"><a href="#场景-2" class="headerlink" title="场景"></a>场景</h3><p>女朋友跟你分手了，你以前付出的感情全部付诸东流。此时可以选择自杀或者郁郁不欢，努力挽回，纠缠不休，或者果断放弃转而寻找新的爱情。</p><h3 id="解答-2"><a href="#解答-2" class="headerlink" title="解答"></a>解答</h3><ol><li>自杀的成本是: 生命，得到的收益是：解脱。</li><li>郁郁不欢的成本是：心情受损，得到的收益：负。</li><li>努力挽回的成本是：挽回所需要花的时间，心力和精力以及金钱，总成本量化为1。得到的收益是：可能（概率是0.3）可以把以前的感情挽回，假设收益是3，则数学期望是0.9。</li><li>纠缠不休：挽回所需要花的时间，心力和精力以及金钱，总成本量化为2。并且需要付出心情受损，痛苦等等，总成本量化为3。得到的收益是：可能（概率是0.3）可以把以前的感情挽回，假设收益是3，则数学期望是0.9。并且有概率（0.3）使得情况恶化，数学期望为0或者负，量化为0或者-0.3。</li><li>果断放弃转而寻找新的爱情的成本是：所需要花的时间，心力和精力以及金钱，总成本量化为1（假设把挽回的资源投入新的感情)，得到的收益：可能概率是（0.5）找到新的感情，但是因为没有感情基础(相比原来的感情收益-2)，但是也没有负担(收益+1），那么数学期望是0.5*（3-2+1）=1。</li><li>结论，应该选择3或者5.最优选择可能是5（随着概率不同略有差别）</li></ol><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>人生中要面临无数次选择，不管恋爱，择业，投资都会面临选择，每次选择都要付出代价，如果你选了A，可能就不能选B。而你选择B的机会成本，不是你当前付出的成本，而是你放弃了B的收益。</p><p><!--<span id="busuanzi_container_page_pv">   阅读量<span id="busuanzi_value_page_pv"></span>次</span>--></p><p></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt;： 机会成本是指在面临多个选择时，被舍弃的选项中最高价值(不一定是金钱的)是本次决策的机会成本,当然，你得需要等到复盘的时候才能看到。&lt;br&gt;&lt;strong&gt;推论1&lt;/strong&gt;： 没有“选项”就等于没有成
+      
+    
+    </summary>
+    
+      <category term="他山之石" scheme="http://blog.xiaoyuyu.net/categories/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3/"/>
+    
+    
+      <category term="学习笔记" scheme="http://blog.xiaoyuyu.net/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="思维模型" scheme="http://blog.xiaoyuyu.net/tags/%E6%80%9D%E7%BB%B4%E6%A8%A1%E5%9E%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>101-使用neo4j构建ownthink知识图谱</title>
@@ -131,9 +159,9 @@
       <category term="杂谈" scheme="http://blog.xiaoyuyu.net/categories/%E6%9D%82%E8%B0%88/"/>
     
     
-      <category term="家训" scheme="http://blog.xiaoyuyu.net/tags/%E5%AE%B6%E8%AE%AD/"/>
-    
       <category term="术与道" scheme="http://blog.xiaoyuyu.net/tags/%E6%9C%AF%E4%B8%8E%E9%81%93/"/>
+    
+      <category term="家训" scheme="http://blog.xiaoyuyu.net/tags/%E5%AE%B6%E8%AE%AD/"/>
     
   </entry>
   
@@ -328,9 +356,9 @@
       <category term="术业专攻" scheme="http://blog.xiaoyuyu.net/categories/%E6%9C%AF%E4%B8%9A%E4%B8%93%E6%94%BB/"/>
     
     
-      <category term="模板" scheme="http://blog.xiaoyuyu.net/tags/%E6%A8%A1%E6%9D%BF/"/>
-    
       <category term="API" scheme="http://blog.xiaoyuyu.net/tags/API/"/>
+    
+      <category term="模板" scheme="http://blog.xiaoyuyu.net/tags/%E6%A8%A1%E6%9D%BF/"/>
     
   </entry>
   
@@ -493,32 +521,6 @@
       <category term="桥牌" scheme="http://blog.xiaoyuyu.net/tags/%E6%A1%A5%E7%89%8C/"/>
     
       <category term="桥牌规则" scheme="http://blog.xiaoyuyu.net/tags/%E6%A1%A5%E7%89%8C%E8%A7%84%E5%88%99/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>76-elastic-search-索引别名</title>
-    <link href="http://blog.xiaoyuyu.net/post/bd9d21fe.html"/>
-    <id>http://blog.xiaoyuyu.net/post/bd9d21fe.html</id>
-    <published>2018-10-22T15:10:01.000Z</published>
-    <updated>2019-09-17T02:52:36.343Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>索引别名像一个快捷方式或者软连接:<br>    在运行的集群中可以直接无缝切换。<br>    给多个索引分组<br>     给索引的一个子集创建视图   </p></blockquote><a id="more"></a><h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法:"></a>基本用法:</h1><ul><li>创建名为my_index_v1的索引,将别名my_index指向它   </li></ul><blockquote><p>curl -X PUT “localhost:9200/my_index_v1”<br>curl -X PUT “localhost:9200/my_index_v1/_alias/my_index”  </p></blockquote><ul><li>检查这个别名指向了哪一个索引:  </li></ul><blockquote><p>curl -X GET “localhost:9200/*/_alias/my_index”</p></blockquote><pre>{"my_index_v1":{"aliases":{"my_index":{}}}}</pre><ul><li>哪些别名指向了这个索引:   <blockquote><p>curl -X GET “localhost:9200/my_index_v1/_alias/*”</p></blockquote></li></ul><ul><li><p>利用索引别名修改映射:</p><pre>curl -X PUT "localhost:9200/my_index_v2" -H 'Content-Type: application/json' -d'{  "mappings": {      "my_type": {          "properties": {              "tags": {                  "type":   "string",                  "index":  "not_analyzed"              }          }      }  }}'</pre></li><li><p>使用reindex的方式重新索引数据。scroll导出数据,bulk导入新的索引。</p></li><li>Scroll API查出第一波数据及获取_scroll游标,去掉sort字段可以加快排序速度.<pre>curl -XGET 'localhost:9200/my_index_v1/_search?scroll=3m' -H 'Content-Type: application/json' -d'{  "query":{      "match_all": {}  },  "sort": ["_doc"],  "size": 2000}</pre></li></ul><pre>{"_scroll_id":"DnF1ZXJ5VGhlbkZldGNoBQAAAAAAAABPFnEwNDBMUERrUW1HZlpEZVJCRkxzRGcAAAAAAAAAUBZxMDQwTFBEa1FtR2ZaRGVSQkZMc0RnAAAAAAAAAE0WcTA0MExQRGtRbUdmWkRlUkJGTHNEZwAAAAAAAABMFnEwNDBMUERrUW1HZlpEZVJCRkxzRGcAAAAAAAAAThZxMDQwTFBEa1FtR2ZaRGVSQkZMc0Rn","took":84,"timed_out":false,"_shards":{"total":5,"successful":5,"failed":0},"hits":{"total":0,"max_score":null,"hits":[]}}</pre><ul><li><p>根据返回的_scroll_id继续向下获取数据,直到结束</p><pre>curl -XGET  'localhost:9200/_search/scroll'  -d'{  "scroll" : "30m",   "scroll_id" : "DnF1ZXJ5VGhlbkZldGNoBQAAAAAAAABPFnEwNDBMUERrUW1HZlpEZVJCRkxzRGcAAAAAAAAAUBZxMDQwTFBEa1FtR2ZaRGVSQkZMc0RnAAAAAAAAAE0WcTA0MExQRGtRbUdmWkRlUkJGTHNEZwAAAAAAAABMFnEwNDBMUERrUW1HZlpEZVJCRkxzRGcAAAAAAAAAThZxMDQwTFBEa1FtR2ZaRGVSQkZMc0Rn" }'</pre></li><li><p>使用bulk API插入数据</p><pre>curl -XPOST 'localhost:9200/my_index_v2/_bulk' -H 'Content-Type: application/json' -d'{"index": {"_index" : "my_index_new", "_type" : "my_type", "_id" : "3"}}{"title" : "2017-01-01"}'</pre></li><li><p>使用原子操作将索引别名指向新的索引。<br><pre><br>curl -X POST “localhost:9200/_aliases” -H ‘Content-Type: application/json’ -d’<br>{<br>  “actions”: [</pre></p><pre><code>{ &quot;remove&quot;: { &quot;index&quot;: &quot;my_index_v1&quot;, &quot;alias&quot;: &quot;my_index&quot; }},{ &quot;add&quot;:    { &quot;index&quot;: &quot;my_index_v2&quot;, &quot;alias&quot;: &quot;my_index&quot; }}</code></pre><p>  ]<br>}’<br></p><p><!--<span id="busuanzi_container_page_pv"> 阅读量<span id="busuanzi_value_page_pv"></span>次</span>--></p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;索引别名像一个快捷方式或者软连接:&lt;br&gt;    在运行的集群中可以直接无缝切换。&lt;br&gt;    给多个索引分组&lt;br&gt;     给索引的一个子集创建视图   &lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-      <category term="术业专攻" scheme="http://blog.xiaoyuyu.net/categories/%E6%9C%AF%E4%B8%9A%E4%B8%93%E6%94%BB/"/>
-    
-    
-      <category term="学习笔记" scheme="http://blog.xiaoyuyu.net/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="Elastic Search" scheme="http://blog.xiaoyuyu.net/tags/Elastic-Search/"/>
     
   </entry>
   
