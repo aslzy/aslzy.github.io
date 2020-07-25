@@ -1,0 +1,983 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="他山之石,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小皮博客 | Xiaopi's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="https://www.dazhuanlan.com/2019/12/17/5df8295721b81/https://blog.csdn.net/u013322876/article/details/60139167 微服务架构下，系统整体的安全性与原有的单体应用结构也有很多差别。我们需要解决服务间的鉴权和认证，同时也要解决对调用者进行认证。">
+<meta name="keywords" content="他山之石">
+<meta property="og:type" content="article">
+<meta property="og:title" content="104-微服务安全设计-用户&amp;服务鉴权">
+<meta property="og:url" content="http://blog.xiaoyuyu.net/post/2270bd06.html">
+<meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
+<meta property="og:description" content="https://www.dazhuanlan.com/2019/12/17/5df8295721b81/https://blog.csdn.net/u013322876/article/details/60139167 微服务架构下，系统整体的安全性与原有的单体应用结构也有很多差别。我们需要解决服务间的鉴权和认证，同时也要解决对调用者进行认证。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2020/2020-07-24-01.jpg">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2020/2020-07-24-02.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2020/2020-07-24-03.png">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2020/2020-07-24-04.png">
+<meta property="og:updated_time" content="2020-07-25T06:32:37.089Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="104-微服务安全设计-用户&amp;服务鉴权">
+<meta name="twitter:description" content="https://www.dazhuanlan.com/2019/12/17/5df8295721b81/https://blog.csdn.net/u013322876/article/details/60139167 微服务架构下，系统整体的安全性与原有的单体应用结构也有很多差别。我们需要解决服务间的鉴权和认证，同时也要解决对调用者进行认证。">
+<meta name="twitter:image" content="http://blog.xiaoyuyu.net/img/2020/2020-07-24-01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/2270bd06.html">
+
+
+
+
+
+  <title> 104-微服务安全设计-用户&服务鉴权 | 小皮博客 | Xiaopi's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-122492745-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1262345012&web_id=1262345012" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小皮博客 | Xiaopi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">没有人的梦想会更卑微,做点什么让自己骄傲</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/projects/library.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            menu.bookmark
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-library">
+          <a href="/library" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            menu.library
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<!--<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/2270bd06.html">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="盛领">
+    <meta itemprop="description" content>
+    <meta itemprop="image" content="https://blog.xiaoyuyu.net/img/avtar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小皮博客 | Xiaopi's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="小皮博客 | Xiaopi's Blog" src>
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                104-微服务安全设计-用户&服务鉴权
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-22T03:28:56+08:00">
+                2020-07-22
+              </time>
+            
+
+            
+
+            <span class="post-meta-divider">|</span>
+            <span title="post.wordcount">
+              1,745 字
+            </span>
+            <span title="post.min2read">
+              需要阅读: 12 分钟
+            </span>
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/术业专攻/" itemprop="url" rel="index">
+                    <span itemprop="name">术业专攻</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://www.dazhuanlan.com/2019/12/17/5df8295721b81/" target="_blank" rel="noopener">https://www.dazhuanlan.com/2019/12/17/5df8295721b81/</a><br><a href="https://blog.csdn.net/u013322876/article/details/60139167" target="_blank" rel="noopener">https://blog.csdn.net/u013322876/article/details/60139167</a></p>
+<p>微服务架构下，系统整体的安全性与原有的单体应用结构也有很多差别。我们需要解决服务间的鉴权和认证，同时也要解决对调用者进行认证。</p>
+<a id="more"></a>
+<h1 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h1><ul>
+<li>无状态: 为了合理保持微服务水平扩展的特性。</li>
+<li>客户端无关: 需要设计统一的安全策略来满足不同终端请求。</li>
+<li>统一登录: 一次登录，可以在平台各个模块间共享登录状态及信息。</li>
+<li>权限控制: 每个组件或者子系统应该有不同的权限控制。</li>
+</ul>
+<h1 id="常见的鉴权方案"><a href="#常见的鉴权方案" class="headerlink" title="常见的鉴权方案"></a>常见的鉴权方案</h1><h2 id="分布式session"><a href="#分布式session" class="headerlink" title="分布式session"></a>分布式session</h2><ul>
+<li>相对于传统单体应用使用的session+中间件(如tomcat)session共享机制,服务的水平扩展受到了极大的制约。一般的优化方案是把session放在跨进程的存储架构中，比如redis。  </li>
+<li>Springcloud同样也可以使用redis做分布式session的存储方案。</li>
+<li>Spring Session对分布式Session提供了支持，同时也可以与Springboot/SpringCloud无缝集成。</li>
+</ul>
+<h2 id="API-Tokens"><a href="#API-Tokens" class="headerlink" title="API Tokens"></a>API Tokens</h2><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><ul>
+<li>Token一般会包含用户的鉴权相关信息，通过在请求当中携带token来传递状态，保证服务本身易于水平扩展。其他微服务可以从token当中提取用户，权限信息完成认证(确定是系统合法用户)和鉴权(确定该用户的角色，权限)，而不需要建立客户端对服务器端的session(一般tomcat或者其他容器共享session很麻烦)。</li>
+</ul>
+<p><img src="/img/2020/2020-07-24-01.jpg" alt></p>
+<center>API Token时序图</center><br>1. 用户使用包含用户名和密码的credential包从客户端发起资源请求。这里的客户端可以是web的js代码，也可以是android或者ios系统及其他物联网设备。<br>2. 后端API接收请求后通过授权中心(也有可能是用户中心或者用户微服务),生产出token，返回给客户端。登录及认证流程完成。<br>3. 客户端获取token后，后续在token失效前都是通过携带此token发起资源请求。<br>4. 后端验证token的有效性及其权限信息，确认用户合法性及权限，然后调用对应的服务返回给客户端。<br><br>### 优点<br><em> 服务器端无状态，也不存储session，在每个请求里面携带用户信息。
+</em> 为水平扩展提高了上限。<br><em> 支持移动端。
+</em> 支持跨程序，跨域调用。<br><br>### 缺点<br><em> 每次请求都要携带token，与auth服务进行交互验证。
+</em> 将鉴权的性能压力由原来的每个服务承担，变成了鉴权服务器承担，并且引入了额外的请求资源消耗（但是符合职责分离的原则，便于优化）。<br><br>## JWT<br>### 描述<br>JSON Web Tokens(JWT)是一种认证协议，基于JSON的开放标准(RFC 7519)。JWT一般被用来在身份提供者和服务提供者之间传递被认证的用户身份信息，便于从服务器端获取资源，也可以增加其他一些额外的其他业务逻辑必须的声明信息。Token可以直接被用于认证，也可以用于加密。<br><br><em> 授权服务器将用户信息和授权范围序列化后放入JSON字符串，使用Base64进行编码，然后使用私钥对这个字符串进行签名，得到一个JSON Web Token。
+
+</em> 其他所有的资源服务器都应该持有对应RSA公钥，当资源服务器接收到这个在Http Header中存有的token请求，资源服务器就可以拿到这个token，并且verify他们是否用正确的私钥签名的（是否经过授权服务器签名，也就是验签)。验签通过后，反序列化之后就拿到了token中包含的有效验证信息。<br><br>### JWT认证流程<br><center><img src="/img/2020/2020-07-24-02.png" alt></center><br><center>JWT认证流程</center>
+
+<ul>
+<li>客户端调用登录接口(或者获取token接口),传入用户名密码。</li>
+<li>服务器端请求身份认证中心，确认用户名密码正确。</li>
+<li>服务端创建JWT,返回给客户端。</li>
+<li>客户端拿到JWT，进行存储(可以存储在缓存中，数据库中,如果是浏览器，存储在cookie中)，在后续请求中，在HTTP请求头加上JWT。</li>
+<li>服务端校验JWT，校验通过后，返回相关资源和数据。</li>
+</ul>
+<h3 id="JWT数据结构"><a href="#JWT数据结构" class="headerlink" title="JWT数据结构"></a>JWT数据结构</h3><center><img src="/img/2020/2020-07-24-03.png" alt></center><br><center>JWT数据结构</center>
+
+<blockquote>
+<p>header.payload.signature</p>
+</blockquote>
+<p>JWT是由此三段信息的BASE64编码之后通过.连接起来的。</p>
+<ul>
+<li>图上的header参数表示类型为JWT，签名算法是<strong>RS256</strong></li>
+<li>payload用来存放有效信息<ul>
+<li>iss: jwt的签发者。</li>
+<li>sub: jwt所面向的用户。</li>
+<li>aud: 接收jwt的接收方，比如测试环境用 test-api.domain.io, 生产环境用api.domain.io</li>
+<li>exp: jwt的过期时间，必须大于签发时间。</li>
+<li>iat: jwt的签发时间。</li>
+<li>scope: jwt的唯一身份标志，用来标识token的一次性，避免重放攻击。</li>
+<li>还可以定义私有字段。</li>
+</ul>
+</li>
+<li>签名(signature): 使用header及payload进行base65编码，并且使用私钥进行加密。  </li>
+</ul>
+<blockquote>
+<p>rsa256.sign(&lt;base64.encode(header)&gt;.&lt;base64.encode(payload)&gt;)</p>
+</blockquote>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>是api tokens的一个标准实现，比自定义方案更加成熟稳定，易于统一规范和共识。</li>
+<li>跨语言支持，使用JSON作为标准结构。</li>
+<li>基于token，无状态。</li>
+<li>占用字节小，便于传输。</li>
+</ul>
+<h3 id="token注销方式"><a href="#token注销方式" class="headerlink" title="token注销方式"></a>token注销方式</h3><ul>
+<li>由于jwt的校验方式只依赖客户端持有，如果用户显式的注销，可能服务器端还未进行注销状态同步，而各个业务服务器的校验token的方式并不会去集中式的查一下是否合法，而是直接依赖非对称加密算法在业务服务器自身完成。</li>
+<li>token可以存储在localstorage中，浏览器注销时自然情况。</li>
+<li>token放在分布式缓存，每次校验时去查一下状态是否已经注销，但这样的话就落入了方式1当中的分布式session的逻辑，失去了快速校验的优点。</li>
+<li>过期自动注销，过期时间可以短一些，比如20分钟。现在大部分服务的策略应该是基于此。</li>
+</ul>
+<h3 id="范例"><a href="#范例" class="headerlink" title="范例"></a>范例</h3><p>参考github.com/sunsetyan/9008-blog-demo/01-jwt.git</p>
+<h2 id="OAuth2"><a href="#OAuth2" class="headerlink" title="OAuth2"></a>OAuth2</h2><center><img src="/img/2020/2020-07-24-04.png" alt></center><br><center>OAuth2流程</center>
+
+<ul>
+<li>OAuth2是一个跨服务授权(Authorization)的开放网络标准，在业界广泛应用的是2.0版本。</li>
+<li>简单来说是客户端应用程序代表用户(得到用户的批准的情况下)去访问受保护的资源。常见的微信授权登录、支付宝小程序授权都是OAuth2的实现方案或者变种。</li>
+</ul>
+<h2 id="Spring-Cloud-Security"><a href="#Spring-Cloud-Security" class="headerlink" title="Spring Cloud Security"></a>Spring Cloud Security</h2><ul>
+<li>包含了Spring Security和Spring Scurity OAuth</li>
+<li>基于OAuth2和OPENID协议的可配置SSO登录机制。</li>
+<li>基于tokens保证访问安全。</li>
+<li>引入UAA(User Account and Authenticaiton)鉴权。</li>
+</ul>
+<h3 id="范例-1"><a href="#范例-1" class="headerlink" title="范例"></a>范例</h3><p>参考github.com/sunsetyan/9008-blog-demo/02-springcloud-security.git</p>
+<p><!--<span id="busuanzi_container_page_pv">
+   阅读量<span id="busuanzi_value_page_pv"></span>次
+</span>--></p>
+
+      
+    </div>
+
+    <!-- add by ling -->
+    <div>
+      
+        <div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>版权声明</span></p>
+  <p><span>本文标题:</span>104-微服务安全设计-用户&服务鉴权</p>
+  <p><span>文章作者:</span>盛领</p>
+  <p><span>发布时间:</span>2020年07月22日 - 03:28:56</p>
+  <!--<p><span>最后更新:</span>2020年07月25日 - 14:32:37</p>-->
+  <p><span>原始链接:</span><a href="/post/2270bd06.html" title="104-微服务安全设计-用户&服务鉴权">http://blog.xiaoyuyu.net/post/2270bd06.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/2270bd06.html" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+  <p>如您有任何商业合作或者授权方面的协商，请给我留言：<a href="mailto: sunsetxiao@126.com">sunsetxiao@126.com</a></p>
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+      
+    </div>
+    <!-- //end -->
+    <div>
+      
+        
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/img/wechat-mp-qcode.jpg" alt="盛领 wechat" style="width: 200px; max-width: 100%;">
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
+</div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechatpay_sl.png" alt="盛领 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/img/alipay_sl.jpeg" alt="盛领 Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/他山之石/" rel="tag"><i class="fa fa-tag"></i> 他山之石</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/788b8fff.html" rel="next" title="103-【模型思维】-[1-第一性原理]">
+                <i class="fa fa-chevron-left"></i> 103-【模型思维】-[1-第一性原理]
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/eb9d4f91.html" rel="prev" title="105-微服务设计原则">
+                105-微服务设计原则 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://blog.xiaoyuyu.net/img/avtar.jpg" alt="盛领">
+          <p class="site-author-name" itemprop="name">盛领</p>
+          <p class="site-description motion-element" itemprop="description">技术宅,架构,Java,历史,地理,天文</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">158</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sunsetyan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/ling.sheng.752" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zaih.com/mentor/85254499/" target="_blank" title="在行">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  在行
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://geek.xiaoyuyu.net/" title="演" target="_blank">演</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://redteamobile.com/" title="红茶移动" target="_blank">红茶移动</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://zyan.cc/" title="张宴的博客" target="_blank">张宴的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://lionheartwang.github.io/" title="一光的博客" target="_blank">一光的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gaigaiming.com/" title="改改名" target="_blank">改改名</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <br>
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/2.js?i=5xxeaiks0u6&amp;m=7&amp;s=178&amp;c=ff0000&amp;t=1" async="async"></script>
+
+<br>
+
+<hr>
+
+<div>
+<iframe width="216" height="512" class="share_self" frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=216&height=512&fansRow=2&ptype=1&speed=0&skin=10&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=6222531012&verifier=92d11e18&dpc=1"></iframe>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#设计原则"><span class="nav-number">1.</span> <span class="nav-text">设计原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的鉴权方案"><span class="nav-number">2.</span> <span class="nav-text">常见的鉴权方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式session"><span class="nav-number">2.1.</span> <span class="nav-text">分布式session</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-Tokens"><span class="nav-number">2.2.</span> <span class="nav-text">API Tokens</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流程"><span class="nav-number">2.2.1.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT数据结构"><span class="nav-number">2.2.2.</span> <span class="nav-text">JWT数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">2.2.3.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#token注销方式"><span class="nav-number">2.2.4.</span> <span class="nav-text">token注销方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#范例"><span class="nav-number">2.2.5.</span> <span class="nav-text">范例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OAuth2"><span class="nav-number">2.3.</span> <span class="nav-text">OAuth2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Cloud-Security"><span class="nav-number">2.4.</span> <span class="nav-text">Spring Cloud Security</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#范例-1"><span class="nav-number">2.4.1.</span> <span class="nav-text">范例</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2003 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">盛领</span>
+  <a href="http://www.miitbeian.gov.cn">京ICP备15045082号-1</a>
+  
+</div>
+<div class="copyright">
+<p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1262345012'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262345012%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script></p>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<!-- 3d -->
+
+<script type="text/javascript" color="0,0,0" opacity="0.67" zindex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":128,"height":256},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
