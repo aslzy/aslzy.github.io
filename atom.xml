@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.xiaoyuyu.net/"/>
-  <updated>2020-07-25T07:12:56.038Z</updated>
+  <updated>2020-07-25T07:15:50.294Z</updated>
   <id>http://blog.xiaoyuyu.net/</id>
   
   <author>
@@ -15,27 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>105-微服务设计原则</title>
-    <link href="http://blog.xiaoyuyu.net/post/eb9d4f91.html"/>
-    <id>http://blog.xiaoyuyu.net/post/eb9d4f91.html</id>
-    <published>2020-07-21T19:42:06.000Z</published>
-    <updated>2020-07-25T07:12:56.038Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="https://www.cnblogs.com/HigginCui/p/10460807.html" target="_blank" rel="noopener">https://www.cnblogs.com/HigginCui/p/10460807.html</a></p><p><!--<span id="busuanzi_container_page_pv">   阅读量<span id="busuanzi_value_page_pv"></span>次</span>--></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/HigginCui/p/10460807.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.cnblogs.com/HigginCui/p/10460807.h
-      
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>104-微服务安全设计-用户&amp;服务鉴权</title>
@@ -511,6 +490,35 @@
       <category term="工具" scheme="http://blog.xiaoyuyu.net/tags/%E5%B7%A5%E5%85%B7/"/>
     
       <category term="技术专题" scheme="http://blog.xiaoyuyu.net/tags/%E6%8A%80%E6%9C%AF%E4%B8%93%E9%A2%98/"/>
+    
+      <category term="奇技淫巧" scheme="http://blog.xiaoyuyu.net/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>79-时间管理系列-工具-奇妙清单</title>
+    <link href="http://blog.xiaoyuyu.net/post/500a18f1.html"/>
+    <id>http://blog.xiaoyuyu.net/post/500a18f1.html</id>
+    <published>2018-11-03T13:17:56.000Z</published>
+    <updated>2019-09-17T02:52:36.345Z</updated>
+    
+    <content type="html"><![CDATA[<p>一直在尝试各种时间管理工具和任务管理工具，而且比较确定要把他们三者合为一。  </p><ul><li>任务管理, teambition比较好。</li><li>智能提醒, 滴答清单做的不错。</li><li>任务和时间review,最好用的是34coins。</li></ul><a id="more"></a><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><blockquote><p>为什么我们需要时间和精力&amp;任务管理?</p></blockquote><ul><li>随着事情的增多，在努力的基础上，如何合理的规划时间，最大化利用你的时间？学生时代我就会用作息时间表来合理的规划时间。方法和努力一样重要。</li><li>你总是会忘记很多琐事，而有时候会因为琐事忘了重要的事情。</li><li>好的任务管理可以帮助你梳理思路，分清主次。</li><li>好的智能提醒或者日程工具可以减少你的精力消耗，让你更聚焦于核心事务。</li></ul><blockquote><p>为什么最先写的是奇妙清单?</p></blockquote><ul><li>笔者在探索将序言中3者功能整合起来的最佳方式，同时应该用合理的精力去管理。之前用了一年多的滴答清单，发现效率还不如34coins更高。但是34coins对任务管理并不友好，所以在权衡这两者之间的关系。</li></ul><h1 id="初识奇妙清单"><a href="#初识奇妙清单" class="headerlink" title="初识奇妙清单?"></a>初识奇妙清单?</h1><ul><li>对于大多数人来说，应该让任务管理变得更容易，但是不需要复杂的层次和设计逻辑。否则容易本末倒置。毕竟我们个人的管理不需要协同。所以jira不合适的。</li><li>需要降低它的使用门槛。</li><li>它的层次结构是： 文件夹-&gt;清单列表-&gt;清单项目-&gt;子任务。 同时它会将星标的和当天任务，当周任务都抽离出来，自动整合。所以这里就兼具了针对各种主题规划任务（可能是一年的），但是自动归纳到每天的执行流程中（当天任务，当周任务）。对大多数人来说，已经足够用了。</li><li>所有平台都有，所以我的安卓手机，苹果手机，笔记本，公司电脑，浏览器，微信公众号。都能用。</li><li>他还具备了对于普通家庭和朋友协作足够使用的协同功能。</li><li>至少，我现在可以把他的任务管理（规划）和智能提醒结合起来了。</li></ul><h1 id="基本教程"><a href="#基本教程" class="headerlink" title="基本教程"></a>基本教程</h1><h1 id="一些原则"><a href="#一些原则" class="headerlink" title="一些原则"></a>一些原则</h1><ul><li>用标签可以来标志不同清单项之间的联系。</li><li>给任务加上 「#重要紧急」、「#重要不紧急」、「#紧急不重要」，「#不紧急不重要」等标签，然后可以用搜索来筛选。</li><li>应该定义一个清单创建的规则，包括命名规则，时间规则，正文规则，标签规则，优先级规则。方便统一整合。</li></ul><h1 id="创建任务的技巧"><a href="#创建任务的技巧" class="headerlink" title="创建任务的技巧"></a>创建任务的技巧</h1><h2 id="可以直接发送邮件"><a href="#可以直接发送邮件" class="headerlink" title="可以直接发送邮件"></a>可以直接发送邮件</h2><ul><li>第一次发送邮件，会收到回复‘启用此帐户的“电邮至奇妙清单”功能。’，点击确认。</li><li>发送邮件到 <a href="mailto:me@wunderlist.com" target="_blank" rel="noopener">me@wunderlist.com</a>。</li><li>清单项目会加入到「收件箱」清单。</li><li>邮件主题会生成清单标题。</li><li>邮件正文会生成备注。</li></ul><center><img src="/img/2018/2018-11-03-01.png" alt="发送邮件"> </center><br><center>图1 发送邮件</center><center><img src="/img/2018/2018-11-03-02.png" alt="发送邮件"> </center><br><center>图2 清单创建效果</center><h2 id="使用浏览器插件"><a href="#使用浏览器插件" class="headerlink" title="使用浏览器插件"></a>使用浏览器插件</h2><ul><li>直接访问<a href="https://chrome.google.com/webstore/detail/wunderlist-new-tab/fgikemaeelgbhjnhnnahcpkjpafaeion" target="_blank" rel="noopener">奇妙清单的Chrome新标签页扩展插件</a></li><li>安装完成后登陆。</li><li>直接打开新的标签页即可添加任务，并且选择加入的清单文件夹。</li></ul><center><img src="/img/2018/2018-11-03-03.png" alt="浏览器插件，新标签创建任务"> </center><br><center>图3 使用浏览器插件，新标签创建任务</center><h2 id="使用addon工具"><a href="#使用addon工具" class="headerlink" title="使用addon工具"></a>使用addon工具</h2><ul><li>直接访问<a href="https://chrome.google.com/webstore/detail/add-to-wunderlist/dmnddeddcgdllibmaodanoonljfdmooc?hl=en" target="_blank" rel="noopener">奇妙清单的add on插件</a></li><li>安装后chrome的右上角会有对应的插件图标。</li></ul><center><img src="/img/2018/2018-11-03-04.png" alt="使用浏览器Addon插件"> </center><br><center>图4 使用浏览器Addon插件</center><h2 id="使用ios的分享功能"><a href="#使用ios的分享功能" class="headerlink" title="使用ios的分享功能"></a>使用ios的分享功能</h2><ul><li>只要在系统分享设置中打开“奇妙清单”，即可随时将文章，网页或者应用分享到“随后阅读”清单。你也可以自行设置。</li><li>这个功能真的很有利于你将碎片化时间整合起来。</li></ul><center><img src="/img/2018/2018-11-03-05.png" alt="分享设置,以UC浏览器为例"> </center><br><center>图5 分享设置,以UC浏览器为例</center> <h1 id="效率提升"><a href="#效率提升" class="headerlink" title="效率提升"></a>效率提升</h1><h2 id="将奇妙清单同步到日历"><a href="#将奇妙清单同步到日历" class="headerlink" title="将奇妙清单同步到日历"></a>将奇妙清单同步到日历</h2><ul><li>账户设置-&gt;日历提要-&gt;连接。</li><li>即可识别并且同步任务到日历。你可以设置为每天同步。</li><li>上面首先会识别系统的日历订阅地址，理论上应该也可以同步到google calendar。不过用了奇妙清单，我应该不会再用google calendar了。</li></ul><h2 id="使用标签功能，做跨清单列表的筛选"><a href="#使用标签功能，做跨清单列表的筛选" class="headerlink" title="使用标签功能，做跨清单列表的筛选"></a>使用标签功能，做跨清单列表的筛选</h2><ul><li>你可以给每个任务项目加上若干标签，然后通过搜索功能中标签视图查看该标签下的所有事项。</li></ul><h2 id="智能清单设置"><a href="#智能清单设置" class="headerlink" title="智能清单设置"></a>智能清单设置</h2><ul><li>系统默认提供了「全部」，「已完成」，「本周」，「今天」，「星标任务」，「分配给我」这6个智能清单。他们会自动聚合各个对应的任务。</li><li>每个聚合清单都有「自动」，「隐藏」，「可见」等三个选项。</li><li>建议选项:<ul><li>「全部」，「已完成」设置为隐藏，因为一般只有回顾的时候才会用到这两个清单。</li><li>星标任务应该保持一直可见，用它来管理优先级最好不过。视情况，你还可以给标签按照四象限管理法则来管理。给任务加上 「#重要紧急」、「#重要不紧急」、「#紧急不重要」，「#不紧急不重要」等标签，然后可以用搜索来筛选。</li></ul></li></ul><h2 id="通用设置"><a href="#通用设置" class="headerlink" title="通用设置"></a>通用设置</h2><ul><li>建议将添加任务到清单顶部，Dock上的角标显示到期&amp;逾期的任务。</li></ul><h1 id="更进一步"><a href="#更进一步" class="headerlink" title="更进一步"></a>更进一步</h1><ul><li>清单列表分为两类。一类是系统根据任务属性智能聚合出来的清单。一类是自己创建的。</li><li>在创建清单清单之前，我已经画出了一个完整的关于家庭生活的思维导图。在此基础上，分门别类的包括了投资，财务，健康医疗，工作，学习等方方面面，根据这样一个思维导图，你可以更好的归纳整理你的日常生活。也可以更好的创建清单。</li><li>如果一个清单列表会存在大于3个月才创建，否则，可以放在「收件箱」或者杂项里面。适当的归类，让每个清单里面有合理数量（一个电脑屏幕或者两～三页手机屏幕可以显示下来）。</li><li>可以尝试用标签来解决分类的问题。</li><li>每天都要完成的事情，重复高效的完成它。我已经用奇妙清单将每天的时间分为了13个时间段，建立了一个「每周schedule」的清单，这个相当于一个作息时间表。然后我要做的，是拿清单中的任务去填满每一天。</li><li>每天要设置一些整块的时间，去完成一些专项活动。这些专项活动，可以是你清单中那些重要的，关键的事情。每周的整块时间内容可以不一样。</li><li>每月的事项同样也可以归纳出来，作为一个清单存在。比如每月的信用卡还款，投资计划，每月财务review，健身，爬山，采购。。等等。</li><li>建立一个清单的建立规则。至少包括”到期日”，重复频率，提醒时间等。</li><li>回顾你的清单。审视你的未完成事项。</li><li>这里我采用了34coins的方法论，来建立我的每天的日常清单。所以目前两者还没有完全结合，只能依赖我的执行了。：）</li></ul><p><!--<span id="busuanzi_container_page_pv">   阅读量<span id="busuanzi_value_page_pv"></span>次</span>--></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一直在尝试各种时间管理工具和任务管理工具，而且比较确定要把他们三者合为一。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;任务管理, teambition比较好。&lt;/li&gt;
+&lt;li&gt;智能提醒, 滴答清单做的不错。&lt;/li&gt;
+&lt;li&gt;任务和时间review,最好用的是34coins。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="术与道" scheme="http://blog.xiaoyuyu.net/categories/%E6%9C%AF%E4%B8%8E%E9%81%93/"/>
+    
+    
+      <category term="工具" scheme="http://blog.xiaoyuyu.net/tags/%E5%B7%A5%E5%85%B7/"/>
     
       <category term="奇技淫巧" scheme="http://blog.xiaoyuyu.net/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/"/>
     
