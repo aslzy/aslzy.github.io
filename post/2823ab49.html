@@ -392,29 +392,29 @@
 
           
             
-          
+  
 
-          
+  
 
-          
-          
+  
+  
 
-          
+  
 
-          
+  
 
-        </div>
-      </header>
-    
+</div>
+</header>
 
 
-    <div class="post-body" itemprop="articleBody">
 
-      
-      
+<div class="post-body" itemprop="articleBody">
 
-      
-        <h2 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h2><p>log4j.rootLogger=ERROR,CONSOLE,FILE # 第一个单词DEBUG代表输出等级(DEBUG/INFO/WARN/ERROR/FATAL), CONSOLE表示控制台输出,FILE表示日志文件，在生产环境中建议关闭CONSOLE, 另外，如果没有特殊指定下述的logger,那么所有日志都会以此条目为准. CONSOLE和FILE可以自己定义,即，同时可以定义多个目标位置。<br>log4j.logger.com.judon=DEBUG # package: com.judon下的日志会输出DEBUG级别的日志，最佳实践是，公共类库和第三方开源项目使用ERROR,自己的生产代码使用INFO级别</p>
+
+
+
+
+<h2 id="1-基础配置"><a href="#1-基础配置" class="headerlink" title="1. 基础配置"></a>1. 基础配置</h2><p>log4j.rootLogger=ERROR,CONSOLE,FILE # 第一个单词DEBUG代表输出等级(DEBUG/INFO/WARN/ERROR/FATAL), CONSOLE表示控制台输出,FILE表示日志文件，在生产环境中建议关闭CONSOLE, 另外，如果没有特殊指定下述的logger,那么所有日志都会以此条目为准. CONSOLE和FILE可以自己定义,即，同时可以定义多个目标位置。<br>log4j.logger.com.judon=DEBUG # package: com.judon下的日志会输出DEBUG级别的日志，最佳实践是，公共类库和第三方开源项目使用ERROR,自己的生产代码使用INFO级别</p>
 <a id="more"></a>
 <h2 id="2-一般可以将生产环境和开发环境的日志分开写。"><a href="#2-一般可以将生产环境和开发环境的日志分开写。" class="headerlink" title="2. 一般可以将生产环境和开发环境的日志分开写。"></a>2. 一般可以将生产环境和开发环境的日志分开写。</h2><h2 id="3-配置分开写"><a href="#3-配置分开写" class="headerlink" title="3. 配置分开写"></a>3. 配置分开写</h2><h3 id="3-1-配置标题"><a href="#3-1-配置标题" class="headerlink" title="3.1 配置标题"></a>3.1 配置标题</h3><p>log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender # CONSOLE对应于基础配置中的CONSOLE , 采用log4j控制台输出</p>
 <h3 id="取值可以有如下几种"><a href="#取值可以有如下几种" class="headerlink" title="取值可以有如下几种"></a>取值可以有如下几种</h3><p>org.apache.log4j.ConsoleAppender（控制台）<br>org.apache.log4j.FileAppender（文件）<br>org.apache.log4j.DailyRollingFileAppender（每天产生一个日志文件）<br>org.apache.log4j.RollingFileAppender（文件大小到达指定尺寸的时候产生新文件）<br>org.apache.log4j.WriterAppender（将日志信息以流格式发送到任意指定的地方）</p>
@@ -428,13 +428,24 @@
    阅读量<span id="busuanzi_value_page_pv"></span>次
 </span>--></p>
 
-      
-    </div>
 
-    <!-- add by ling -->
-    <div>
-      
-        <div class="my_post_copyright">
+</div>
+
+<div>
+
+    
+<div>
+<img src="https://blog.xiaoyuyu.net/img/2020/2020-08-21-1.jpg">
+</div>
+
+
+
+<div>
+
+<!-- add by ling -->
+<div>
+
+<div class="my_post_copyright">
   <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
   
   <!-- JS库 sweetalert 可修改路径 -->
@@ -469,24 +480,25 @@
 </script>
 
 
-      
-    </div>
-    <!-- //end -->
-    <div>
-      
-        
+
+</div>
+<!-- //end -->
+<div>
+
+
 <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
     <img id="wechat_subscriber_qcode" src="/img/wechat-mp-qcode.jpg" alt="盛领 wechat" style="width: 200px; max-width: 100%;">
     <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
 </div>
 
 
-      
-    </div>
 
-    <div>
-      
-        
+</div>
+
+
+<div>
+
+
   <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
     <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
     <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
@@ -509,11 +521,11 @@
   </div>
 
 
-      
-    </div>
+
+</div>
 
 
-    <footer class="post-footer">
+<footer class="post-footer">
       
         <div class="post-tags">
           
@@ -547,7 +559,7 @@
       
       
     </footer>
-  </article>
+  </div></div></article>
 
 
 
