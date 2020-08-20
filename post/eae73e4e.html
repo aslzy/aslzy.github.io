@@ -1,0 +1,1482 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="python,基础教程,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小皮博客 | Xiaopi's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="菜鸟教程确实做的挺好的。我这里只是搬运一下。">
+<meta name="keywords" content="python,基础教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="72-python基础-1">
+<meta property="og:url" content="http://blog.xiaoyuyu.net/post/eae73e4e.html">
+<meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
+<meta property="og:description" content="菜鸟教程确实做的挺好的。我这里只是搬运一下。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-17T02:52:36.340Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="72-python基础-1">
+<meta name="twitter:description" content="菜鸟教程确实做的挺好的。我这里只是搬运一下。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/eae73e4e.html">
+
+
+
+
+
+  <title> 72-python基础-1 | 小皮博客 | Xiaopi's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-122492745-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1262345012&web_id=1262345012" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小皮博客 | Xiaopi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">没有人的梦想会更卑微,做点什么让自己骄傲</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/projects/library.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            menu.bookmark
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-library">
+          <a href="/library" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            menu.library
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<!--<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/eae73e4e.html">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="盛领">
+    <meta itemprop="description" content>
+    <meta itemprop="image" content="https://blog.xiaoyuyu.net/img/avtar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小皮博客 | Xiaopi's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="小皮博客 | Xiaopi's Blog" src>
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                72-python基础-1
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-14T00:41:40+08:00">
+                2018-10-14
+              </time>
+            
+
+            
+
+            <span class="post-meta-divider">|</span>
+            <span title="post.wordcount">
+              2,898 字
+            </span>
+            <span title="post.min2read">
+              需要阅读: 30 分钟
+            </span>
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/术业专攻/" itemprop="url" rel="index">
+                    <span itemprop="name">术业专攻</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+</div>
+</header>
+
+
+
+<div class="post-body" itemprop="articleBody">
+
+<div>
+
+    
+<div>
+<a href="https://www.aliyun.com/activity/daily/bestoffer?userCode=vdh32a6p"><img src="https://blog.xiaoyuyu.net/img/2020/2020-08-21-1.jpg">
+</a>
+</div>
+
+
+
+<div>
+
+<p>
+</p>
+
+
+
+
+
+
+<p>菜鸟教程确实做的挺好的。我这里只是搬运一下。</p>
+<a id="more"></a>
+<h1 id="环境搭建及使用"><a href="#环境搭建及使用" class="headerlink" title="环境搭建及使用"></a>环境搭建及使用</h1><ul>
+<li>打开<a href="https://www.python.org/downloads/" target="_blank" rel="noopener">下载地址</a></li>
+<li>选择对应版本的安装包,这里使用的是3.7版本。下载并且安装。</li>
+<li>查看版本 <pre>
+shengl-pro:11-python shengl$ python3 --version
+Python 3.7.0
+shengl-pro:11-python shengl$ pip3 --version
+pip 10.0.1 from /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pip (python 3.7)
+</pre>
+
+</li>
+</ul>
+<h1 id="简单操作"><a href="#简单操作" class="headerlink" title="简单操作"></a>简单操作</h1><h2 id="helloworld"><a href="#helloworld" class="headerlink" title="helloworld"></a>helloworld</h2><h3 id="命令行操作"><a href="#命令行操作" class="headerlink" title="命令行操作"></a>命令行操作</h3><blockquote>
+<p>python3 # 进入交互式命令行</p>
+</blockquote>
+<pre>
+shengl-pro:11-python shengl$ python3
+Python 3.7.0 (v3.7.0:1bf9cc5093, Jun 26 2018, 23:26:24) 
+[Clang 6.0 (clang-600.0.57)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+>>> print("Hello World!")
+Hello World!
+>>> exit();
+shengl-pro:11-python shengl$
+</pre>
+
+<hr>
+
+<h3 id="编写HelloWorld程序"><a href="#编写HelloWorld程序" class="headerlink" title="编写HelloWorld程序"></a>编写HelloWorld程序</h3><blockquote>
+<p>vim /Users/shengl/8-learn/11-python/00-startup/00-HelloWorld.py</p>
+</blockquote>
+<pre>
+#!/usr/bin/python3
+# Author: Shengl
+
+print("Hello, World!")
+</pre>
+
+<h1 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h1><pre>
+shengl-pro:00-startup shengl$ python3 00-HelloWorld.py 
+Hello, World!
+</pre>
+
+<h1 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h1><h4 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h4><ul>
+<li>默认情况下以UTF-8编码,所有字符都是Unicode字符集</li>
+</ul>
+<blockquote>
+<h1 id="coding-utf-8"><a href="#coding-utf-8" class="headerlink" title="-- coding: utf-8 --"></a>-<em>- coding: utf-8 -</em>-</h1></blockquote>
+<h4 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h4><ul>
+<li>一般规则，字母或者下划线，其他部分是字母，数字或者下划线。对大小写敏感。</li>
+</ul>
+<h4 id="保留字"><a href="#保留字" class="headerlink" title="保留字"></a>保留字</h4><ul>
+<li>下述命令可以展示所有保留字</li>
+</ul>
+<pre>
+shengl-pro:00-startup shengl$ python3
+Python 3.7.0 (v3.7.0:1bf9cc5093, Jun 26 2018, 23:26:24) 
+[Clang 6.0 (clang-600.0.57)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import keyword
+>>> keyword.kwlist
+['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield']
+</pre>
+
+<h4 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h4><ul>
+<li>单行用 #开头，多行用 ‘’’ 或者 “””</li>
+</ul>
+<h4 id="行与缩进"><a href="#行与缩进" class="headerlink" title="行与缩进"></a>行与缩进</h4><ul>
+<li>python用缩进表示代码块。所以对其和好的代码规范很重要。</li>
+<li>\反斜杠用来实现多行语句。也可以用[],{},()来包括。</li>
+</ul>
+<h4 id="数字"><a href="#数字" class="headerlink" title="数字"></a>数字</h4><p>int, bool, float, complex</p>
+<h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><ul>
+<li>单引号和双引号作用一致</li>
+<li>三引号可以指定一个多行字符串</li>
+<li>‘\’是转义符号</li>
+<li>“+”连接,*重复</li>
+<li>index下标字符串可以0~ 开始，-1从右边开始。</li>
+<li>python中的字符串不可以改变。没有字符类型，字符就是长度为一的字符串。</li>
+<li>变量[开始下标:结束下标]</li>
+</ul>
+<pre>
+#! /usr/bin/python3
+# program name: 03-string.py
+# comment: learn to use string
+# author: ling
+
+srcString = "Shengling"
+
+print(srcString)                   # 输出字符串
+print(srcString[0:-1])             # 第一个到倒数第二个
+print(srcString[0])                # 输出字符串第一个字符
+print(srcString[2:5])              # 输出从第三个开始到第五个的字符
+print(srcString[2:])               # 输出从第三个开始的后的所有字符
+print(srcString * 2)               # 输出字符串两次
+print(srcString + '你好')           # 连接字符串
+
+print('hello\srcString')           # 使用反斜杠(\)+n转义特殊字符
+print(r'hello\srcString')          # 在字符串前面添加一个 r，表示原始字符串，不会发生转义
+</pre>
+
+<p> #输出如下</p>
+<pre>
+shengl-pro:00-startup shengl$ python3 03-string.py 
+Shengling
+Shenglin
+S
+eng
+engling
+ShenglingShengling
+Shengling你好
+hello\srcString
+hello\srcString
+</pre>
+
+<h4 id="空行"><a href="#空行" class="headerlink" title="空行"></a>空行</h4><p>函数，方法或者累方法之间用空行分割，表示新的代码开始。和缩进不同的是，它并不是python语法到一部分。<br>在任何语言中，空行也是代码的一部分，不能多，也不要少。(可能不是程序的一部分)。</p>
+<h4 id="import和from-…-import"><a href="#import和from-…-import" class="headerlink" title="import和from … import"></a>import和from … import</h4><p>将整个模块导入, 格式为 import modulename.<br>导入某个(些)函数, 格式为 from modulename import functionName1 [, functionName2 …]<br>将某个模块的函数全部导入，格式为: from modulename import *</p>
+<pre>
+import sys
+
+print("===========Python import mode=====")
+print("命令行参数为")
+for i in sys.argv:
+    print(i)
+print('\n python 路径为', sys.path)
+</pre>
+
+<h1 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h1><pre>
+shengl-pro:00-startup shengl$ python3 04-import.py 
+===========Python import mode=====
+命令行参数为
+04-import.py
+ python 路径为 ['/Users/shengl/8-learn/11-python/00-startup', '/Library/Frameworks/Python.framework/Versions/3.7/lib/python37.zip', '/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7', '/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/lib-dynload', '/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages']
+</pre>
+
+<h4 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h4><blockquote>
+<p>python -h</p>
+</blockquote>
+<pre>
+shengl-pro:00-startup shengl$ python3 -h
+usage: /Library/Frameworks/Python.framework/Versions/3.7/Resources/Python.app/Contents/MacOS/Python [option] ... [-c cmd | -m mod | file | -] [arg] ...
+Options and arguments (and corresponding environment variables):
+-b     : issue warnings about str(bytes_instance), str(bytearray_instance)
+         and comparing bytes/bytearray with str. (-bb: issue errors)
+-B     : don't write .pyc files on import; also PYTHONDONTWRITEBYTECODE=x
+...[etc.]
+</pre>
+
+<hr>
+
+<h1 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h1><ul>
+<li>不可变: Number(数字),String(字符串),Tuple(元组);</li>
+<li>可变: List(列表),Dictionary(字典),Set(集合);</li>
+</ul>
+<h3 id="数字操作"><a href="#数字操作" class="headerlink" title="数字操作"></a>数字操作</h3><pre>
+a,b,c,d = 20,5.5,True,3+2j
+print (type(a), type(b), type(c), type(d))
+</pre>
+
+<pre>
+shengl-pro:00-startup shengl$ python3 10-number.py 
+<class 'int'> <class 'float'> <class 'bool'> <class 'complex'>
+</class></class></class></class></pre>
+
+<h3 id="判定类型"><a href="#判定类型" class="headerlink" title="判定类型"></a>判定类型</h3><ul>
+<li>type()不会认为子类是一种父类类型。</li>
+<li>isinstance()会认为子类是一种父类类型。</li>
+</ul>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p>列表可以嵌套列表，使用广泛。数据类型也可以是任意</p>
+<pre>
+subList = ["sub1", 4+5j]
+list = [ 'abc', 1024 , 2+3j, 'helloworld', subList ]    
+print (list)            # 输出完整列表
+print (list[3])         # 输出列表第一个元素
+print (list[1:-1])      # 从第二个开始输出到第三个元素
+print (list[2:])        # 输出从第三个元素开始的所有元素
+print (subList * 2)     # 输出两次列表
+print (list + subList)  # 连接列表
+</pre>
+ #执行之后的结果
+<pre>
+shengl-pro:00-startup shengl$ python3 11-list.py 
+['abc', 1024, (2+3j), 'helloworld', ['sub1', (4+5j)]]
+helloworld
+[1024, (2+3j), 'helloworld']
+[(2+3j), 'helloworld', ['sub1', (4+5j)]]
+['sub1', (4+5j), 'sub1', (4+5j)]
+['abc', 1024, (2+3j), 'helloworld', ['sub1', (4+5j)], 'sub1', (4+5j)]
+</pre>
+* 列表的元素可以被改变。用赋值操作 = 
+* List内置了很多方法比如append(),pop()
+* 写在方括号中间，用逗号隔开
+* 可以被索引和切片
+* +进行拼接
+
+### Tuple(元组)
+TODO
+
+### Set(集合)
+TODO
+
+### Dictionary(字典)
+TODO
+
+### Python的数据类型转换
+
+<hr>
+
+# Python操作数据库MySQL
+## 使用mysql-connector
+### 安装
+> pip3 install mysql-connector
+
+<pre>
+shengl-pro:00-startup shengl$ python3
+Python 3.7.0 (v3.7.0:1bf9cc5093, Jun 26 2018, 23:26:24) 
+[Clang 6.0 (clang-600.0.57)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import mysql.connector
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'mysql'.     
+
+ # 安装成功之后
+shengl-pro:00-startup shengl$ pip3 install mysql-connector
+Collecting mysql-connector
+  Downloading https://files.pythonhosted.org/packages/59/e0/775bf5fb3dd4c7f9aa6877907d4a96eecca6886c603dedfea6e843e94560/mysql-connector-2.1.6.tar.gz (11.8MB)
+    100% |████████████████████████████████| 11.8MB 504kB/s 
+Installing collected packages: mysql-connector
+  Running setup.py install for mysql-connector ... done
+Successfully installed mysql-connector-2.1.6
+You are using pip version 10.0.1, however version 18.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+
+>>> import mysql.connector
+>>> 
+ # 没有产生错误则安装成功。
+</module></stdin></pre>
+
+<h3 id="数据库链接"><a href="#数据库链接" class="headerlink" title="数据库链接"></a>数据库链接</h3><ul>
+<li>下载MySQL 5.7并且准备安装<a href="https://dev.mysql.com/downloads/file/?id=479114" target="_blank" rel="noopener">下载地址</a> ,安装MySQL不详细介绍了。</li>
+</ul>
+<pre>
+TODO 使用标准库
+</pre>
+
+<hr>
+
+<h2 id="使用PyMySQL"><a href="#使用PyMySQL" class="headerlink" title="使用PyMySQL"></a>使用PyMySQL</h2><h3 id="安装准备"><a href="#安装准备" class="headerlink" title="安装准备"></a>安装准备</h3><blockquote>
+<p>pip3 install PyMySQL</p>
+</blockquote>
+<pre>
+shengl-pro:00-startup shengl$ pip3 install PyMySQL
+Collecting PyMySQL
+  Downloading https://files.pythonhosted.org/packages/a7/7d/682c4a7da195a678047c8f1c51bb7682aaedee1dca7547883c3993ca9282/PyMySQL-0.9.2-py2.py3-none-any.whl (47kB)
+    100% |████████████████████████████████| 51kB 364kB/s 
+Collecting cryptography (from PyMySQL)
+  Downloading https://files.pythonhosted.org/packages/98/0b/a6f293e5f10095dd8657a1b125c1ba6995c59d39cd8e20355475c8f760d0/cryptography-2.3.1-cp34-abi3-macosx_10_6_intel.whl (1.5MB)
+    100% |████████████████████████████████| 1.5MB 515kB/s 
+Collecting asn1crypto>=0.21.0 (from cryptography->PyMySQL)
+  Downloading https://files.pythonhosted.org/packages/ea/cd/35485615f45f30a510576f1a56d1e0a7ad7bd8ab5ed7cdc600ef7cd06222/asn1crypto-0.24.0-py2.py3-none-any.whl (101kB)
+    100% |████████████████████████████████| 102kB 467kB/s 
+Collecting cffi!=1.11.3,>=1.7 (from cryptography->PyMySQL)
+  Downloading https://files.pythonhosted.org/packages/0b/ba/32835c9965d8a0090723e1d0b47373365525c4bd08c807b5efdc9fecbc99/cffi-1.11.5-cp37-cp37m-macosx_10_9_x86_64.whl (163kB)
+    100% |████████████████████████████████| 163kB 496kB/s 
+Requirement already satisfied: idna>=2.1 in /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages (from cryptography->PyMySQL) (2.7)
+Collecting six>=1.4.1 (from cryptography->PyMySQL)
+  Downloading https://files.pythonhosted.org/packages/67/4b/141a581104b1f6397bfa78ac9d43d8ad29a7ca43ea90a2d863fe3056e86a/six-1.11.0-py2.py3-none-any.whl
+Collecting pycparser (from cffi!=1.11.3,>=1.7->cryptography->PyMySQL)
+  Downloading https://files.pythonhosted.org/packages/68/9e/49196946aee219aead1290e00d1e7fdeab8567783e83e1b9ab5585e6206a/pycparser-2.19.tar.gz (158kB)
+    100% |████████████████████████████████| 163kB 419kB/s 
+Installing collected packages: asn1crypto, pycparser, cffi, six, cryptography, PyMySQL
+  Running setup.py install for pycparser ... done
+Successfully installed PyMySQL-0.9.2 asn1crypto-0.24.0 cffi-1.11.5 cryptography-2.3.1 pycparser-2.19 six-1.11.0
+</pre>
+
+<h3 id="测试数据库连接"><a href="#测试数据库连接" class="headerlink" title="测试数据库连接"></a>测试数据库连接</h3><pre>
+import pymysql
+
+ # db conn
+dbconn = pymysql.connect("localhost", "root", "titps4gg", "py_test")
+
+ # 使用cursor() 方法创建一个游标对象 cursor
+cursor = dbconn.cursor()
+
+cursor.execute("SELECT VERSION()")
+
+ # 使用 fetchone() 方法获取单条数据
+data = cursor.fetchone()
+print ("Database version : %s" % data)
+dbconn.close()
+</pre>
+
+<ul>
+<li>运行程序</li>
+</ul>
+<blockquote>
+<p>python3 25-mysql-pymysql-startup.py<br>Database version : 5.7.23</p>
+</blockquote>
+<hr>
+
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><ul>
+<li>创建表</li>
+<li>插入一条多条数据</li>
+<li>查询一条或者多条数据</li>
+<li>更新删除</li>
+<li>执行事务</li>
+</ul>
+<pre>
+import pymysql
+
+# db conn
+dbconn = pymysql.connect("localhost", "test_user", "password", "py_test")
+
+# 使用cursor() 方法创建一个游标对象 cursor
+cursor = dbconn.cursor()
+
+# DROP IFEXSIT
+
+cursor.execute ("DROP TABLE IF EXISTS EMPLOYEE")
+
+# 1. 使用预处理创建表
+createSql = """CREATE TABLE EMPLOYEE(
+               FIRST_NAME CHAR(20) NOT NULL, 
+               LAST_NAME CHAR(20),
+               AGE INT(4),
+               SEX CHAR(1),
+               INCOME FLOAT)"""
+cursor.execute(createSql)
+
+# 插入数据
+insertOneSql = """INSERT INTO EMPLOYEE(FIRST_NAME,
+                  LAST_NAME, AGE, SEX, INCOME)
+                  VALUES ('Mac', 'Mohan', 20, 'M', 20000),('zhou', 'Yan', 20, 'M', 20000)"""
+
+try:
+     cursor.execute(insertOneSql)
+     dbconn.commit()
+except:
+     print("Error while insert1")
+     dbconn.rollback()
+
+# once again
+insertSql = "INSERT INTO EMPLOYEE(FIRST_NAME, \
+             LAST_NAME, AGE, SEX, INCOME) \
+             VALUES('%s', '%s', '%d', '%c', '%d') " % \
+             ('Ling', 'sheng', 20, 'M', 20000)
+
+try:
+     cursor.execute(insertSql)
+     dbconn.commit()
+except:
+     print("Error while insert")
+     dbconn.rollback()
+
+# Search
+searchSql = "SELECT * FROM EMPLOYEE \
+             WHERE INCOME > '%d'" % (1500)
+try:
+     cursor.execute(searchSql)
+     results = cursor.fetchall()
+     for row in results:
+         fname = row[0]
+         lname = row[1]
+         age = row[2]
+         sex = row[3]
+         income = row[4]
+         print("fname=%s, lname=%s, age=%d, sex=%s, income=%d" % \
+              (fname, lname, age, sex, income))
+except Exception as e:
+     print("Error while search: {0}".format(e))
+
+# Update
+updateSql = "UPDATE EMPLOYEE SET AGE = AGE + 1 WHERE SEX = '%c'" % ('M')
+
+try:
+     cursor.execute(updateSql)
+     dbconn.commit()
+except:
+     print("Error while update")
+     dbconn.rollback()
+
+# Delete
+deleteSql = "DELETE FROM EMPLOYEE WHERE FIRST_NAME = '%s'" % ('Mac')
+
+try:
+     cursor.execute(deleteSql)
+     dbconn.commit()
+except:
+     print("Error while delete")
+     dbconn.rollback()
+
+dbconn.close()
+</pre>
+
+<h1 id="执行结果-1"><a href="#执行结果-1" class="headerlink" title="执行结果"></a>执行结果</h1><pre>
+shengl-pro:00-startup shengl$ python3 26-pymysql-detail.py 
+fname=Mac, lname=Mohan, age=20, sex=M, income=20000
+fname=zhou, lname=Yan, age=20, sex=M, income=20000
+fname=Ling, lname=sheng, age=20, sex=M, income=20000
+ # 数据库中应该有2条数据。
+</pre>
+
+<hr>
+
+<h1 id="Python发送网络请求"><a href="#Python发送网络请求" class="headerlink" title="Python发送网络请求"></a>Python发送网络请求</h1><h3 id="使用urllib"><a href="#使用urllib" class="headerlink" title="使用urllib"></a>使用urllib</h3><pre>
+import urllib.request
+import urllib.parse
+
+url = "http://localhost:9200/_cat/master?v&pretty"
+response = urllib.request.urlopen(url)
+print(response.read().decode('utf-8'))
+</pre>
+
+<h1 id="执行代码-这里是对本机的elastic-search做请求"><a href="#执行代码-这里是对本机的elastic-search做请求" class="headerlink" title="执行代码,这里是对本机的elastic search做请求"></a>执行代码,这里是对本机的elastic search做请求</h1><pre>
+shengl-pro:00-startup shengl$ python3 30-use-urllib.py 
+id                     host      ip        node
+H-thNd-UT6SoHcIN8_c-_g 127.0.0.1 127.0.0.1 H-thNd-
+</pre>
+
+<hr>
+
+<h3 id="使用requests"><a href="#使用requests" class="headerlink" title="使用requests"></a>使用requests</h3><ul>
+<li>安装requests,前面的urllib不需要安装，是python标准库</li>
+</ul>
+<pre>
+shengl-pro:00-startup shengl$ pip3 install requests
+Collecting requests
+  Downloading https://files.pythonhosted.org/packages/65/47/7e02164a2a3db50ed6d8a6ab1d6d60b69c4c3fdf57a284257925dfc12bda/requests-2.19.1-py2.py3-none-any.whl (91kB)
+    100% |████████████████████████████████| 92kB 433kB/s 
+Collecting chardet<3.1.0,>=3.0.2 (from requests)
+  Downloading https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl (133kB)
+    100% |████████████████████████████████| 143kB 2.4MB/s 
+Collecting urllib3<1.24,>=1.21.1 (from requests)
+  Downloading https://files.pythonhosted.org/packages/bd/c9/6fdd990019071a4a32a5e7cb78a1d92c53851ef4f56f62a3486e6a7d8ffb/urllib3-1.23-py2.py3-none-any.whl (133kB)
+    100% |████████████████████████████████| 143kB 1.7MB/s 
+Collecting certifi>=2017.4.17 (from requests)
+  Downloading https://files.pythonhosted.org/packages/df/f7/04fee6ac349e915b82171f8e23cee63644d83663b34c539f7a09aed18f9e/certifi-2018.8.24-py2.py3-none-any.whl (147kB)
+    100% |████████████████████████████████| 153kB 1.2MB/s 
+Collecting idna<2.8,>=2.5 (from requests)
+  Downloading https://files.pythonhosted.org/packages/4b/2a/0276479a4b3caeb8a8c1af2f8e4355746a97fab05a372e4a2c6a6b876165/idna-2.7-py2.py3-none-any.whl (58kB)
+    100% |████████████████████████████████| 61kB 438kB/s 
+Installing collected packages: chardet, urllib3, certifi, idna, requests
+Successfully installed certifi-2018.8.24 chardet-3.0.4 idna-2.7 requests-2.19.1 urllib3-1.23
+</2.8,></1.24,></3.1.0,></pre>
+
+<p>编写代码</p>
+<pre>
+import requests  
+url = "http://localhost:9200/_cat/master?v&pretty"
+response = requests.get(url)
+print(response.text)
+</pre>
+
+<h1 id="运行代码的返回结果"><a href="#运行代码的返回结果" class="headerlink" title="运行代码的返回结果"></a>运行代码的返回结果</h1><pre>
+shengl-pro:00-startup shengl$ python3 31-use-requests.py 
+id                     host      ip        node
+H-thNd-UT6SoHcIN8_c-_g 127.0.0.1 127.0.0.1 H-thNd-
+</pre>
+
+<hr>
+
+<h1 id="Python操作JSON"><a href="#Python操作JSON" class="headerlink" title="Python操作JSON"></a>Python操作JSON</h1><h3 id="基本说明"><a href="#基本说明" class="headerlink" title="基本说明"></a>基本说明</h3><ul>
+<li>json.dumps(): 对数据进行编码。</li>
+<li>json.loads(): 对数据进行解码。</li>
+<li>编码转换说明<ul>
+<li>python格式 =&gt; JSON格式</li>
+<li>dict =&gt; object</li>
+<li>list,tuple =&gt; array</li>
+<li>str =&gt; string</li>
+<li>int,float,int- &amp; float.. =&gt; number</li>
+<li>True =&gt; true</li>
+<li>False =&gt; false</li>
+<li>None =&gt; null</li>
+</ul>
+</li>
+<li>解码说明<ul>
+<li>object =&gt; dict</li>
+<li>arry =&gt; list</li>
+<li>string =&gt; str</li>
+<li>number(int) =&gt; int</li>
+<li>number(real) =&gt; float</li>
+<li>其他逆向</li>
+</ul>
+</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><pre>
+import json
+
+# 构造数据结构
+subList = ["sub1", 4+5j]
+listData = [ 'abc', 1024 , 2+3j, 'helloworld', subList ]
+dictData = {
+    'number1' : 1,
+    'name' : 'ling',
+    'url' : 'http://blog.xiaoyuyu.net'
+}
+
+# Python object to JSON
+jsonDict = json.dumps(dictData)
+print("python原始字典", repr(dictData))
+print("转换为JSON对象后的字典", jsonDict)
+print("")
+
+subList = [1,2,3,4]
+listData = [ 'abc', 1024 , "2+3j", 'helloworld', subList]
+jsonList = json.dumps(listData)
+print("python原始列表", repr(listData))
+print("转换为JSON对象后的列表", jsonList)
+print("")
+
+# JSON to Python object 
+pythonObject1 = json.loads(jsonDict)
+print("pythonObject1['name']: ", pythonObject1['name'])
+pythonObject2 = json.loads(jsonList)
+print("pythonObject2[4][2]:", pythonObject2[4][2])
+
+# 写入文件
+with open('/tmp/demo-list.json', 'w') as outputFileList:
+    json.dump(jsonList, outputFileList)
+with open('/tmp/demo-dict.json', 'w') as outputFileDict:
+    json.dump(jsonDict, outputFileDict)
+
+# 从文件中读取
+with open('/tmp/demo-list.json', 'r') as inputFileList:
+    poListFile = json.loads(inputFileList)
+</pre>
+
+<p> #执行结果</p>
+<pre>
+shengl-pro:00-startup shengl$ python3 40-json-transfer.py 
+python原始字典 {'number1': 1, 'name': 'ling', 'url': 'http://blog.xiaoyuyu.net'}
+转换为JSON对象后的字典 {"number1": 1, "name": "ling", "url": "http://blog.xiaoyuyu.net"}
+
+python原始列表 ['abc', 1024, '2+3j', 'helloworld', [1, 2, 3, 4]]
+转换为JSON对象后的列表 ["abc", 1024, "2+3j", "helloworld", [1, 2, 3, 4]]
+
+pythonObject1['name']:  ling
+pythonObject2[4][2]: 3
+</pre>
+
+<h1 id="查看文件，已经写入"><a href="#查看文件，已经写入" class="headerlink" title="查看文件，已经写入"></a>查看文件，已经写入</h1><blockquote>
+<p>vim /tmp/demo-dict.json </p>
+</blockquote>
+<pre>
+"{\"number1\": 1, \"name\": \"ling\", \"url\": \"http://blog.xiaoyuyu.net\"}"
+</pre>
+
+<hr>
+
+<h1 id="Python正则表达式"><a href="#Python正则表达式" class="headerlink" title="Python正则表达式"></a>Python正则表达式</h1><p>TODO</p>
+<p><!--<span id="busuanzi_container_page_pv">
+   阅读量<span id="busuanzi_value_page_pv"></span>次
+</span>--></p>
+
+
+</div>
+
+<div>
+
+    
+<div>
+<a href="https://www.aliyun.com/activity/daily/bestoffer?userCode=vdh32a6p"><img src="https://blog.xiaoyuyu.net/img/2020/2020-08-21-1.jpg">
+</a>
+</div>
+
+
+
+<div>
+
+<!-- add by ling -->
+<div>
+
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>版权声明</span></p>
+  <p><span>本文标题:</span>72-python基础-1</p>
+  <p><span>文章作者:</span>盛领</p>
+  <p><span>发布时间:</span>2018年10月14日 - 00:41:40</p>
+  <!--<p><span>最后更新:</span>2019年09月17日 - 10:52:36</p>-->
+  <p><span>原始链接:</span><a href="/post/eae73e4e.html" title="72-python基础-1">http://blog.xiaoyuyu.net/post/eae73e4e.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/eae73e4e.html" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+  <p>如您有任何商业合作或者授权方面的协商，请给我留言：<a href="mailto: sunsetxiao@126.com">sunsetxiao@126.com</a></p>
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+
+</div>
+<!-- //end -->
+<div>
+
+
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/img/wechat-mp-qcode.jpg" alt="盛领 wechat" style="width: 200px; max-width: 100%;">
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
+</div>
+
+
+
+</div>
+
+
+<div>
+
+
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechatpay_sl.png" alt="盛领 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/img/alipay_sl.jpeg" alt="盛领 Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          
+            <a href="/tags/基础教程/" rel="tag"><i class="fa fa-tag"></i> 基础教程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/8c2f38b1.html" rel="next" title="71-我是如何学习的?">
+                <i class="fa fa-chevron-left"></i> 71-我是如何学习的?
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/55f1049a.html" rel="prev" title="73-金字塔原理-读书笔记">
+                73-金字塔原理-读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div></div></div></div></article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://blog.xiaoyuyu.net/img/avtar.jpg" alt="盛领">
+          <p class="site-author-name" itemprop="name">盛领</p>
+          <p class="site-description motion-element" itemprop="description">技术宅,架构,Java,历史,地理,天文</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">89</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">158</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sunsetyan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/ling.sheng.752" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zaih.com/mentor/85254499/" target="_blank" title="在行">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  在行
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://geek.xiaoyuyu.net/" title="演" target="_blank">演</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://redteamobile.com/" title="红茶移动" target="_blank">红茶移动</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://zyan.cc/" title="张宴的博客" target="_blank">张宴的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://lionheartwang.github.io/" title="一光的博客" target="_blank">一光的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gaigaiming.com/" title="改改名" target="_blank">改改名</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <br>
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/2.js?i=5xxeaiks0u6&amp;m=7&amp;s=178&amp;c=ff0000&amp;t=1" async="async"></script>
+
+<br>
+
+<hr>
+
+<div>
+<iframe width="216" height="512" class="share_self" frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=216&height=512&fansRow=2&ptype=1&speed=0&skin=10&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=6222531012&verifier=92d11e18&dpc=1"></iframe>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境搭建及使用"><span class="nav-number">1.</span> <span class="nav-text">环境搭建及使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单操作"><span class="nav-number">2.</span> <span class="nav-text">简单操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#helloworld"><span class="nav-number">2.1.</span> <span class="nav-text">helloworld</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行操作"><span class="nav-number">2.1.1.</span> <span class="nav-text">命令行操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写HelloWorld程序"><span class="nav-number">2.1.2.</span> <span class="nav-text">编写HelloWorld程序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行程序"><span class="nav-number">3.</span> <span class="nav-text">运行程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本语法"><span class="nav-number">4.</span> <span class="nav-text">基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编码"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">编码</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#coding-utf-8"><span class="nav-number">5.</span> <span class="nav-text">-- coding: utf-8 --</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#标识符"><span class="nav-number">5.0.0.1.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#保留字"><span class="nav-number">5.0.0.2.</span> <span class="nav-text">保留字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注释"><span class="nav-number">5.0.0.3.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#行与缩进"><span class="nav-number">5.0.0.4.</span> <span class="nav-text">行与缩进</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字"><span class="nav-number">5.0.0.5.</span> <span class="nav-text">数字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串"><span class="nav-number">5.0.0.6.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空行"><span class="nav-number">5.0.0.7.</span> <span class="nav-text">空行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#import和from-…-import"><span class="nav-number">5.0.0.8.</span> <span class="nav-text">import和from … import</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行结果"><span class="nav-number">6.</span> <span class="nav-text">执行结果</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命令行参数"><span class="nav-number">6.0.0.1.</span> <span class="nav-text">命令行参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本数据类型"><span class="nav-number">7.</span> <span class="nav-text">基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字操作"><span class="nav-number">7.0.1.</span> <span class="nav-text">数字操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判定类型"><span class="nav-number">7.0.2.</span> <span class="nav-text">判定类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">7.0.3.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库链接"><span class="nav-number">7.0.4.</span> <span class="nav-text">数据库链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用PyMySQL"><span class="nav-number">7.1.</span> <span class="nav-text">使用PyMySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装准备"><span class="nav-number">7.1.1.</span> <span class="nav-text">安装准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试数据库连接"><span class="nav-number">7.1.2.</span> <span class="nav-text">测试数据库连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-number">7.1.3.</span> <span class="nav-text">基本操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行结果-1"><span class="nav-number">8.</span> <span class="nav-text">执行结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python发送网络请求"><span class="nav-number">9.</span> <span class="nav-text">Python发送网络请求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用urllib"><span class="nav-number">9.0.1.</span> <span class="nav-text">使用urllib</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行代码-这里是对本机的elastic-search做请求"><span class="nav-number">10.</span> <span class="nav-text">执行代码,这里是对本机的elastic search做请求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用requests"><span class="nav-number">10.0.1.</span> <span class="nav-text">使用requests</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行代码的返回结果"><span class="nav-number">11.</span> <span class="nav-text">运行代码的返回结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python操作JSON"><span class="nav-number">12.</span> <span class="nav-text">Python操作JSON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本说明"><span class="nav-number">12.0.1.</span> <span class="nav-text">基本说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">12.0.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看文件，已经写入"><span class="nav-number">13.</span> <span class="nav-text">查看文件，已经写入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python正则表达式"><span class="nav-number">14.</span> <span class="nav-text">Python正则表达式</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2003 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">盛领</span>
+  <a href="http://www.miitbeian.gov.cn">京ICP备15045082号-1</a>
+  
+</div>
+<div class="copyright">
+<p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1262345012'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262345012%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script></p>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<!-- 3d -->
+
+<script type="text/javascript" color="0,0,0" opacity="0.67" zindex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":128,"height":256},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
