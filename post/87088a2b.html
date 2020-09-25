@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
 <meta property="og:description" content="明明已经在github配置了sshkey，却还是提示没有权限。。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-17T02:52:36.347Z">
+<meta property="og:updated_time" content="2020-09-10T03:51:27.933Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="84-github配置当中遇到的一个小坑">
 <meta name="twitter:description" content="明明已经在github配置了sshkey，却还是提示没有权限。。">
@@ -357,7 +357,7 @@
 
             <span class="post-meta-divider">|</span>
             <span title="post.wordcount">
-              302 字
+              303 字
             </span>
             <span title="post.min2read">
               需要阅读: 4 分钟
@@ -448,7 +448,7 @@
 <ul>
 <li>找到原因，当前ssh key未被启用,启动私钥即可</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-add ~/.ssh/shengl-github</span><br><span class="line">Identity added: /Users/shengl/.ssh/shengl-github (/Users/shengl/.ssh/shengl-github)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-add -K ~/.ssh/shengl-github</span><br><span class="line">Identity added: /Users/shengl/.ssh/shengl-github (/Users/shengl/.ssh/shengl-github)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>再次运行校验配置 ssh -vT <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a> 则已经成功。</li>
 </ul>
@@ -493,7 +493,7 @@
   <p><span>本文标题:</span>84-github配置当中遇到的一个小坑</p>
   <p><span>文章作者:</span>盛领</p>
   <p><span>发布时间:</span>2019年01月06日 - 11:05:33</p>
-  <!--<p><span>最后更新:</span>2019年09月17日 - 10:52:36</p>-->
+  <!--<p><span>最后更新:</span>2020年09月10日 - 11:51:27</p>-->
   <p><span>原始链接:</span><a href="/post/87088a2b.html" title="84-github配置当中遇到的一个小坑">http://blog.xiaoyuyu.net/post/87088a2b.html</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/87088a2b.html" aria-label="复制成功！"></i></span>
   </p>
@@ -658,7 +658,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">91</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -676,7 +676,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">158</span>
+                <span class="site-state-item-count">162</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

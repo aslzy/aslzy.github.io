@@ -1,0 +1,1181 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="专栏,RASA,NLP,系列教程,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="小皮博客 | Xiaopi's Blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="RASA可以用于构建基于上下文的对话平台。RASA主要有两个模块，RASA-NLU用于做语义理解。RASA-Core用于对话管理。RASA的官方文档在：https://rasa.com/docs/rasa/">
+<meta name="keywords" content="专栏,RASA,NLP,系列教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="106-【RASA系列教程】-简单开始">
+<meta property="og:url" content="http://blog.xiaoyuyu.net/post/51ca0d3.html">
+<meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
+<meta property="og:description" content="RASA可以用于构建基于上下文的对话平台。RASA主要有两个模块，RASA-NLU用于做语义理解。RASA-Core用于对话管理。RASA的官方文档在：https://rasa.com/docs/rasa/">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2020/2020-09-26-01.jpg">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2020/2020-09-26-02.jpg">
+<meta property="og:updated_time" content="2020-09-25T19:39:11.548Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="106-【RASA系列教程】-简单开始">
+<meta name="twitter:description" content="RASA可以用于构建基于上下文的对话平台。RASA主要有两个模块，RASA-NLU用于做语义理解。RASA-Core用于对话管理。RASA的官方文档在：https://rasa.com/docs/rasa/">
+<meta name="twitter:image" content="http://blog.xiaoyuyu.net/img/2020/2020-09-26-01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/51ca0d3.html">
+
+
+
+
+
+  <title> 106-【RASA系列教程】-简单开始 | 小皮博客 | Xiaopi's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-122492745-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1262345012&web_id=1262345012" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小皮博客 | Xiaopi's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">没有人的梦想会更卑微,做点什么让自己骄傲</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/projects/library.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            menu.bookmark
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-library">
+          <a href="/library" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            menu.library
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<!--<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>-->
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/51ca0d3.html">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="盛领">
+    <meta itemprop="description" content>
+    <meta itemprop="image" content="https://blog.xiaoyuyu.net/img/avtar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="小皮博客 | Xiaopi's Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="小皮博客 | Xiaopi's Blog" src>
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                106-【RASA系列教程】-简单开始
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-25T16:35:10+08:00">
+                2020-09-25
+              </time>
+            
+
+            
+
+            <span class="post-meta-divider">|</span>
+            <span title="post.wordcount">
+              1,216 字
+            </span>
+            <span title="post.min2read">
+              需要阅读: 12 分钟
+            </span>
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/术业专攻/" itemprop="url" rel="index">
+                    <span itemprop="name">术业专攻</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+</div>
+</header>
+
+
+
+<div class="post-body" itemprop="articleBody">
+
+<div>
+
+    
+<div>
+<a href="https://www.aliyun.com/activity/daily/bestoffer?userCode=vdh32a6p"><img src="https://blog.xiaoyuyu.net/img/2020/2020-08-21-1.jpg">
+</a>
+</div>
+
+
+
+<div>
+
+<p>
+</p>
+
+
+
+
+
+
+<p>RASA可以用于构建基于上下文的对话平台。RASA主要有两个模块，RASA-NLU用于做语义理解。RASA-Core用于对话管理。RASA的官方文档在：<a href="https://rasa.com/docs/rasa/" target="_blank" rel="noopener">https://rasa.com/docs/rasa/</a></p>
+<a id="more"></a>
+<h1 id="安装RASA及RASA-X"><a href="#安装RASA及RASA-X" class="headerlink" title="安装RASA及RASA X"></a>安装RASA及RASA X</h1><p>假设已经安装好了python3(因为本机已经有python2.7版本，所以使用了别名),virtualenv.</p>
+<pre>
+virtualenv -p python3 venv
+source venv/bin/activate
+pip3 install rasa-x --extra-index-url https://pypi.rasa.com/simple
+</pre>
+
+<h1 id="RASA的Helloworld"><a href="#RASA的Helloworld" class="headerlink" title="RASA的Helloworld"></a>RASA的Helloworld</h1><p>官方示例：<a href="https://rasa.com/docs/rasa/prototype-an-assistant#train-and-talk-to-your-assistant，这里可以直接通过浏览器测试。" target="_blank" rel="noopener">https://rasa.com/docs/rasa/prototype-an-assistant#train-and-talk-to-your-assistant，这里可以直接通过浏览器测试。</a></p>
+<h2 id="创建默认的初始项目"><a href="#创建默认的初始项目" class="headerlink" title="创建默认的初始项目"></a>创建默认的初始项目</h2><blockquote>
+<p>rasa init –no-prompt</p>
+</blockquote>
+<h3 id="安装过程效果如下"><a href="#安装过程效果如下" class="headerlink" title="安装过程效果如下"></a>安装过程效果如下</h3><pre>
+Welcome to Rasa! 🤖
+To get started quickly, an initial project will be created.
+If you need some help, check out the documentation at https://rasa.com/docs/rasa.
+Created project directory at '/Users/shengl/0000-hugerfuture/0-code/20-xiaoling/205-brain/2052-rasa-framework'.
+...
+Your Rasa model is trained and saved at '/Users/shengl/0000-hugerfuture/0-code/20-xiaoling/205-brain/2052-rasa-framework/models/20200926-023658.tar.gz'.
+If you want to speak to the assistant, run **'rasa shell'** at any time inside the project directory.
+</pre>
+
+<ul>
+<li>如描述所说，可以使用<strong>“rasa shell”</strong>来运行对话管理。</li>
+</ul>
+<h3 id="这些命令将创建以下文件"><a href="#这些命令将创建以下文件" class="headerlink" title="这些命令将创建以下文件"></a>这些命令将创建以下文件</h3><pre>
+-rw-r--r--  1 shengl  staff     0  9  3 22:33 __init__.py
+drwxr-xr-x  4 shengl  staff   128  9 26 02:36 __pycache__
+-rw-r--r--  1 shengl  staff   757  9  3 22:33 actions.py
+-rw-r--r--  1 shengl  staff   622  9  3 22:33 config.yml
+-rw-r--r--  1 shengl  staff   938  9  3 22:33 credentials.yml
+drwxr-xr-x  4 shengl  staff   128  9 26 02:36 data
+-rw-r--r--  1 shengl  staff   549  9  3 22:33 domain.yml
+-rw-r--r--  1 shengl  staff  1456  9  3 22:33 endpoints.yml
+drwxr-xr-x  3 shengl  staff    96  9 26 02:38 models
+drwxr-xr-x  3 shengl  staff    96  9 26 02:36 tests
+</pre>
+
+<h3 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h3><h4 id="nlu"><a href="#nlu" class="headerlink" title="nlu"></a>nlu</h4><ul>
+<li>data/nlu.md 用于定义我们的对话管理想要处理的意图。系统默认的有这些:</li>
+</ul>
+<pre>
+## intent:greet
+- hey
+- hello
+- hi
+- good morning
+- good evening
+- hey there
+
+## intent:goodbye
+- bye
+- goodbye
+- see you around
+- see you later
+
+## intent:affirm
+- yes
+- indeed
+- of course
+- that sounds good
+- correct
+</pre>
+
+<ul>
+<li>RASA NLU会识别其中的intents(意图)</li>
+</ul>
+<h4 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h4><blockquote>
+<p>vim config.yml # 主要定义了pipline和策略</p>
+</blockquote>
+<pre>
+pipeline:
+  - name: WhitespaceTokenizer
+  - name: RegexFeaturizer
+  - name: LexicalSyntacticFeaturizer
+  - name: CountVectorsFeaturizer
+  - name: CountVectorsFeaturizer
+    analyzer: "char_wb"
+    min_ngram: 1
+    max_ngram: 4
+  - name: DIETClassifier
+    epochs: 100
+  - name: EntitySynonymMapper
+  - name: ResponseSelector
+    epochs: 100
+</pre>
+
+<h4 id="对话的流程"><a href="#对话的流程" class="headerlink" title="对话的流程"></a>对话的流程</h4><ul>
+<li>对话管理(DM,Dialogue Management)是对话平台的核心调度模块。在RASA中由RASA Core负责。我们需要定义好stories(对话场景的流程,一个story处理一种对话场景)。基本要素包括用户的意图和它需要处理的行动。</li>
+</ul>
+<blockquote>
+<p>vim data/stories.md</p>
+</blockquote>
+<pre>
+## happy path
+* greet
+  - utter_greet
+* mood_great
+  - utter_happy
+
+## sad path 1
+* greet
+  - utter_greet
+* mood_unhappy
+  - utter_cheer_up
+  - utter_did_that_help
+* affirm
+  - utter_happy
+</pre>
+
+<h4 id="Domain-领域"><a href="#Domain-领域" class="headerlink" title="Domain-领域"></a>Domain-领域</h4><p>Domain定义了意图（intent)和动作(action),以及对应的内容模板(templates).</p>
+<blockquote>
+<p>vim domain.yml</p>
+</blockquote>
+<pre>
+ntents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+</pre>
+
+<ul>
+<li>RASA Core将管理这些流程，并且在对应的场景选择对应的动作。</li>
+</ul>
+<h4 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h4><blockquote>
+<p>rasa train</p>
+</blockquote>
+<pre>
+Nothing changed. You can use the old model stored at '/Users/shengl/0000-hugerfuture/0-code/20-xiaoling/205-brain/2052-rasa-framework/01-rasa-startup/models/20200926-023658.tar.gz'.
+</pre>
+
+<h4 id="对话"><a href="#对话" class="headerlink" title="对话"></a>对话</h4><blockquote>
+<p>rasa shell</p>
+</blockquote>
+<pre>
+2020-09-26 03:26:31 INFO     root  - Connecting to channel 'cmdline' which was specified by the '--connector' argument. Any other channels will be ignored. To connect to all given channels, omit the '--connector' argument.
+2020-09-26 03:26:31 INFO     root  - Starting Rasa server on http://localhost:5005
+2020-09-26 03:26:41 INFO     root  - Rasa server is up and running.
+Bot loaded. Type a message and press enter (use '/stop' to exit): 
+Your input ->  hello                                                                                                                                                                                        
+Hey! How are you?
+Your input ->  whats your name                                                                                                                                                                              
+I am a bot, powered by Rasa.
+Your input ->  who am i                                                                                                                                                                                     
+I am a bot, powered by Rasa.
+Your input ->         
+</pre>
+
+<center><img src="/img/2020/2020-09-26-01.jpg" alt></center><br><center>在浏览器中访问服务</center>
+
+<h1 id="中文样例"><a href="#中文样例" class="headerlink" title="中文样例"></a>中文样例</h1><h2 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h2><ul>
+<li>在data/nlu.md, data/stories.md和domain.yml里面增加对中文的支持。</li>
+</ul>
+<blockquote>
+<p>vim data/nlu.md</p>
+</blockquote>
+<pre>
+## intent:greet
+- hey
+- hello
+- hi
+- good morning
+- good evening
+- hey there
+- 你好
+- 早上好
+- 中午好
+- 晚上好
+- 你好呀
+
+## intent:mood_happy
+- great
+- very good
+- nice
+- 很好
+- 不错
+- 我很好
+
+## intent:mood_unhappy
+- sad
+</pre>
+
+<blockquote>
+<p>vim data/stories.md # 由于这里只涉及流程，我们不准备新增流程，所以中文和英文的流程是一样的，暂时不做修改。</p>
+</blockquote>
+<blockquote>
+<p>vim domain.yml</p>
+</blockquote>
+<pre>
+...
+responses:
+  utter_greet:
+  - text: 你好，你今天过的如何?
+  utter_happy:
+  - text: 那很不错
+  utter_unhappy:
+  - text: 发生什么事情啦，可以和我说说嘛?
+actions:
+...
+</pre>
+
+<h2 id="训练及运行"><a href="#训练及运行" class="headerlink" title="训练及运行"></a>训练及运行</h2><blockquote>
+<p>rasa train<br>rasa shell nlu<br>rasa shell</p>
+</blockquote>
+<pre>
+2020-09-26 03:37:03 INFO     root  - Connecting to channel 'cmdline' which was specified by the '--connector' argument. Any other channels will be ignored. To connect to all given channels, omit the '--connector' argument.
+2020-09-26 03:37:03 INFO     root  - Starting Rasa server on http://localhost:5005
+2020-09-26 03:37:13 INFO     root  - Rasa server is up and running.
+Bot loaded. Type a message and press enter (use '/stop' to exit): 
+Your input ->  hello                                                                                                                                                                                        
+你好，你今天过的如何?
+Your input ->  你好                                                                                                                                                                                         
+你好，你今天过的如何?
+Your input ->  还可以                                                                                                                                                                                       
+你好，你今天过的如何?
+Your input ->  不错                                                                                                                                                                                         
+那很不错
+Your input ->  晚上好                                                                                                                                                                                       
+你好，你今天过的如何?
+Your input ->  不好                                                                                                                                                                                         
+发生什么事情啦，可以和我说说嘛?
+Your input ->  你懂个啥                                                                                                                                                                                     
+你好，你今天过的如何?
+Your input ->    
+</pre>
+
+<ul>
+<li>最终效果如下:</li>
+</ul>
+<center><img src="/img/2020/2020-09-26-02.jpg" alt></center><br><center>最终效果</center>
+
+<p><!--<span id="busuanzi_container_page_pv">
+   阅读量<span id="busuanzi_value_page_pv"></span>次
+</span>--></p>
+
+
+</div>
+
+<div>
+
+    
+<div>
+<a href="https://www.aliyun.com/activity/daily/bestoffer?userCode=vdh32a6p"><img src="https://blog.xiaoyuyu.net/img/2020/2020-08-21-1.jpg">
+</a>
+</div>
+
+
+
+<div>
+
+<!-- add by ling -->
+<div>
+
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+
+  <p><span>版权声明</span></p>
+  <p><span>本文标题:</span>106-【RASA系列教程】-简单开始</p>
+  <p><span>文章作者:</span>盛领</p>
+  <p><span>发布时间:</span>2020年09月25日 - 16:35:10</p>
+  <!--<p><span>最后更新:</span>2020年09月26日 - 03:39:11</p>-->
+  <p><span>原始链接:</span><a href="/post/51ca0d3.html" title="106-【RASA系列教程】-简单开始">http://blog.xiaoyuyu.net/post/51ca0d3.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/51ca0d3.html" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+  <p>如您有任何商业合作或者授权方面的协商，请给我留言：<a href="mailto: sunsetxiao@126.com">sunsetxiao@126.com</a></p>
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+
+</div>
+<!-- //end -->
+<div>
+
+
+<div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/img/wechat-mp-qcode.jpg" alt="盛领 wechat" style="width: 200px; max-width: 100%;">
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客！</div>
+</div>
+
+
+
+</div>
+
+
+<div>
+
+
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/img/wechatpay_sl.png" alt="盛领 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/img/alipay_sl.jpeg" alt="盛领 Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/专栏/" rel="tag"><i class="fa fa-tag"></i> 专栏</a>
+          
+            <a href="/tags/RASA/" rel="tag"><i class="fa fa-tag"></i> RASA</a>
+          
+            <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          
+            <a href="/tags/系列教程/" rel="tag"><i class="fa fa-tag"></i> 系列教程</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/217889f.html" rel="next" title="105-使用rasa-nlu-chi构造中文意图识别服务">
+                <i class="fa fa-chevron-left"></i> 105-使用rasa-nlu-chi构造中文意图识别服务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div></div></div></div></article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://blog.xiaoyuyu.net/img/avtar.jpg" alt="盛领">
+          <p class="site-author-name" itemprop="name">盛领</p>
+          <p class="site-description motion-element" itemprop="description">技术宅,架构,Java,历史,地理,天文</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">162</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/sunsetyan" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/ling.sheng.752" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zaih.com/mentor/85254499/" target="_blank" title="在行">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  在行
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://geek.xiaoyuyu.net/" title="演" target="_blank">演</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://redteamobile.com/" title="红茶移动" target="_blank">红茶移动</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://zyan.cc/" title="张宴的博客" target="_blank">张宴的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://lionheartwang.github.io/" title="一光的博客" target="_blank">一光的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://gaigaiming.com/" title="改改名" target="_blank">改改名</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <br>
+
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/2.js?i=5xxeaiks0u6&amp;m=7&amp;s=178&amp;c=ff0000&amp;t=1" async="async"></script>
+
+<br>
+
+<hr>
+
+<div>
+<iframe width="216" height="512" class="share_self" frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=216&height=512&fansRow=2&ptype=1&speed=0&skin=10&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=6222531012&verifier=92d11e18&dpc=1"></iframe>
+</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装RASA及RASA-X"><span class="nav-number">1.</span> <span class="nav-text">安装RASA及RASA X</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RASA的Helloworld"><span class="nav-number">2.</span> <span class="nav-text">RASA的Helloworld</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建默认的初始项目"><span class="nav-number">2.1.</span> <span class="nav-text">创建默认的初始项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装过程效果如下"><span class="nav-number">2.1.1.</span> <span class="nav-text">安装过程效果如下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#这些命令将创建以下文件"><span class="nav-number">2.1.2.</span> <span class="nav-text">这些命令将创建以下文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解读"><span class="nav-number">2.1.3.</span> <span class="nav-text">解读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nlu"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">nlu</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统配置"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">系统配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对话的流程"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">对话的流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Domain-领域"><span class="nav-number">2.1.3.4.</span> <span class="nav-text">Domain-领域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练模型"><span class="nav-number">2.1.3.5.</span> <span class="nav-text">训练模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对话"><span class="nav-number">2.1.3.6.</span> <span class="nav-text">对话</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中文样例"><span class="nav-number">3.</span> <span class="nav-text">中文样例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置修改"><span class="nav-number">3.1.</span> <span class="nav-text">配置修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练及运行"><span class="nav-number">3.2.</span> <span class="nav-text">训练及运行</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2003 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">盛领</span>
+  <a href="http://www.miitbeian.gov.cn">京ICP备15045082号-1</a>
+  
+</div>
+<div class="copyright">
+<p><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1262345012'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1262345012%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script></p>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<!-- 3d -->
+
+<script type="text/javascript" color="0,0,0" opacity="0.67" zindex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":128,"height":256},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
