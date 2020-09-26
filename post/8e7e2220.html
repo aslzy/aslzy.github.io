@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="github,git,问题解决,">
+  <meta name="keywords" content="小皮博客,技术博客,blog.xiaoyuyu.net,Java,分布式,搜索引擎,架构">
 
 
 
@@ -86,18 +86,19 @@
 
 
 
-<meta name="description" content="明明已经在github配置了sshkey，却还是提示没有权限。。">
-<meta name="keywords" content="github,git,问题解决">
+<meta name="description" content="Swagger最大的好处是与代码在一起生成文档，理论上你改完了代码，文档也接着更新了。良好的解决了常规情况下文档与代码不一致的情况。本文主要记录python的常用框架与swagger集成的问题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="84-github配置当中遇到的一个小坑">
-<meta property="og:url" content="http://blog.xiaoyuyu.net/post/87088a2b.html">
+<meta property="og:title" content="107-python3集成flask及swagger">
+<meta property="og:url" content="http://blog.xiaoyuyu.net/post/8e7e2220.html">
 <meta property="og:site_name" content="小皮博客 | Xiaopi&#39;s Blog">
-<meta property="og:description" content="明明已经在github配置了sshkey，却还是提示没有权限。。">
+<meta property="og:description" content="Swagger最大的好处是与代码在一起生成文档，理论上你改完了代码，文档也接着更新了。良好的解决了常规情况下文档与代码不一致的情况。本文主要记录python的常用框架与swagger集成的问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-09-10T03:51:27.933Z">
+<meta property="og:image" content="http://blog.xiaoyuyu.net/img/2020/2020-09-26-03.jpg">
+<meta property="og:updated_time" content="2020-09-26T04:48:14.712Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="84-github配置当中遇到的一个小坑">
-<meta name="twitter:description" content="明明已经在github配置了sshkey，却还是提示没有权限。。">
+<meta name="twitter:title" content="107-python3集成flask及swagger">
+<meta name="twitter:description" content="Swagger最大的好处是与代码在一起生成文档，理论上你改完了代码，文档也接着更新了。良好的解决了常规情况下文档与代码不一致的情况。本文主要记录python的常用框架与swagger集成的问题。">
+<meta name="twitter:image" content="http://blog.xiaoyuyu.net/img/2020/2020-09-26-03.jpg">
 
 
 
@@ -125,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/87088a2b.html">
+  <link rel="canonical" href="http://blog.xiaoyuyu.net/post/8e7e2220.html">
 
 
 
 
 
-  <title> 84-github配置当中遇到的一个小坑 | 小皮博客 | Xiaopi's Blog </title>
+  <title> 107-python3集成flask及swagger | 小皮博客 | Xiaopi's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -309,7 +310,7 @@
   
 
   <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/87088a2b.html">
+  <link itemprop="mainEntityOfPage" href="http://blog.xiaoyuyu.net/post/8e7e2220.html">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="盛领">
@@ -333,7 +334,7 @@
             
             
               
-                84-github配置当中遇到的一个小坑
+                107-python3集成flask及swagger
               
             
           </h1>
@@ -348,8 +349,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-06T11:05:33+08:00">
-                2019-01-06
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-26T04:47:11+08:00">
+                2020-09-26
               </time>
             
 
@@ -357,37 +358,15 @@
 
             <span class="post-meta-divider">|</span>
             <span title="post.wordcount">
-              303 字
+              746 字
             </span>
             <span title="post.min2read">
-              需要阅读: 4 分钟
+              需要阅读: 8 分钟
             </span>
 
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/术业专攻/" itemprop="url" rel="index">
-                    <span itemprop="name">术业专攻</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -430,38 +409,146 @@
 
 
 
-<p>明明已经在github配置了sshkey，却还是提示没有权限。。</p>
+<p>Swagger最大的好处是与代码在一起生成文档，理论上你改完了代码，文档也接着更新了。良好的解决了常规情况下文档与代码不一致的情况。<br>本文主要记录python的常用框架与swagger集成的问题。</p>
 <a id="more"></a>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Cloning into 'XXXX'...</span><br><span class="line">Username for 'https://github.com': shengl</span><br><span class="line">Password for 'https://shengl@github.com': </span><br><span class="line">remote: Password authentication is not available for Git operations.</span><br><span class="line">remote: You must use a personal access token or SSH key.</span><br><span class="line">remote: See https://github.com/settings/tokens or https://github.com/settings/ssh</span><br><span class="line">fatal: unable to access 'https://github.com/XXXX/XXXX': The requested URL returned error: 403</span><br></pre></td></tr></table></figure>
-<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><ul>
-<li>首先查看<a href="https://github.com/settings/ssh" target="_blank" rel="noopener">https://github.com/settings/ssh</a> 的sshkey配置，确认是可用的ssh key，并且查看本地的sshkey是否一致 </li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.ssh/shengl-github.pub</span><br></pre></td></tr></table></figure>
-<ul>
-<li>再次clone，仍然是同样的报错</li>
-<li>校验配置 ,返回如下 </li>
+<h1 id="编写文档"><a href="#编写文档" class="headerlink" title="编写文档"></a>编写文档</h1><pre>
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: HelloWorld API
+  description: A simple API to learn how to write OpenAPI Specification
+
+schemes:
+  - https
+host: api.domain.io
+basePath: /helloworld
+
+paths:
+  /persons:
+    get:
+      summary: Gets some persons
+      description: Returns a list containing all persons.
+      responses:
+        200:
+          description: A list of Person
+          schema:
+            type: array
+            items:
+              required:
+                - username
+              properties:
+                firstName:
+                  type: string
+</pre>
+
+<h1 id="使用swagger-codegen"><a href="#使用swagger-codegen" class="headerlink" title="使用swagger-codegen"></a>使用swagger-codegen</h1><p>官方地址在: <a href="https://github.com/swagger-api/swagger-codegen" target="_blank" rel="noopener">https://github.com/swagger-api/swagger-codegen</a></p>
+<h2 id="使用pip3安装"><a href="#使用pip3安装" class="headerlink" title="使用pip3安装"></a>使用pip3安装</h2><blockquote>
+<p>pip3 install swagger-py-codegen</p>
+</blockquote>
+<h2 id="生成代码"><a href="#生成代码" class="headerlink" title="生成代码"></a>生成代码</h2><ul>
+<li>其中helloworld.yml文件参考前面的文档，也可以自行编写。</li>
+<li>swagger本身的规范移步谷歌即可。</li>
 </ul>
 <blockquote>
-<p>ssh -vT <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a> </p>
+<p>swagger_py_codegen –swagger-doc helloworld.yml helloworld-py-app</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Are you sure you want to continue connecting (yes/no)? yes</span><br><span class="line">...</span><br><span class="line">debug1: No more authentication methods to try.</span><br><span class="line">git@github.com: Permission denied (publickey).</span><br></pre></td></tr></table></figure>
-<ul>
-<li>找到原因，当前ssh key未被启用,启动私钥即可</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-add -K ~/.ssh/shengl-github</span><br><span class="line">Identity added: /Users/shengl/.ssh/shengl-github (/Users/shengl/.ssh/shengl-github)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>再次运行校验配置 ssh -vT <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a> 则已经成功。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Are you sure you want to continue connecting (yes/no)? yes</span><br><span class="line">...</span><br><span class="line">debug1: client_input_channel_req: channel 0 rtype exit-status reply 0</span><br><span class="line">Hi shengl! You've successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
-<ul>
-<li>注意，此时应该使用git协议拷贝代码</li>
-</ul>
+<pre>
+generate    helloworld-py-app/helloworld_py_app/helloworld/schemas.py
+generate    helloworld-py-app/helloworld_py_app/helloworld/routes.py
+generate    helloworld-py-app/helloworld_py_app/helloworld/api/persons.py
+generate    helloworld-py-app/helloworld_py_app/helloworld/validators.py
+generate    helloworld-py-app/helloworld_py_app/helloworld/api/__init__.py
+generate    helloworld-py-app/helloworld_py_app/helloworld/__init__.py
+generate    helloworld-py-app/helloworld_py_app/__init__.py
+generate    helloworld-py-app/requirements.txt
+</pre>
+
+<h2 id="可选参数"><a href="#可选参数" class="headerlink" title="可选参数"></a>可选参数</h2><p>如果不指定-tlp参数，默认将使用flask作为框架，如果指定–ui –spec则会在-p指定的目录下生成ui目录static</p>
 <blockquote>
-<p>git clone <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:<em>[org-name]/[project-name]</em>.git</p>
+<p>swagger_py_codegen –help</p>
 </blockquote>
-<p><!--<span id="busuanzi_container_page_pv">
+<pre>
+Usage: swagger_py_codegen [OPTIONS] DESTINATION
+
+Options:
+  -s, --swagger-doc TEXT   Swagger doc file.  [required]
+  -f, --force              Force overwrite.
+  -p, --package TEXT       Package name / application name.
+  -t, --template-dir TEXT  Path of your custom templates directory.
+  --spec, --specification  Generate online specification json response.
+  --ui                     Generate swagger ui.
+  --validate               Validate swagger file.
+  -tlp, --templates TEXT   gen flask/tornado/falcon/sanic templates, default
+                           flask.
+  --version                Show current version.
+  --help                   Show this message and exit.
+</pre>
+
+<blockquote>
+<p>swagger_py_codegen –swagger-doc helloworld.yml helloworld-py-app-ui –ui –spec</p>
+</blockquote>
+<pre>
+generate    helloworld-py-app-ui/helloworld_py_app_ui/static/swagger-ui
+generate    helloworld-py-app-ui/helloworld_py_app_ui/helloworld/schemas.py
+generate    helloworld-py-app-ui/helloworld_py_app_ui/helloworld/routes.py
+generate    helloworld-py-app-ui/helloworld_py_app_ui/helloworld/api/persons.py
+generate    helloworld-py-app-ui/helloworld_py_app_ui/static/helloworld/swagger.json
+generate    helloworld-py-app-ui/helloworld_py_app_ui/helloworld/validators.py
+generate    helloworld-py-app-ui/helloworld_py_app_ui/helloworld/api/__init__.py
+generate    helloworld-py-app-ui/helloworld_py_app_ui/helloworld/__init__.py
+generate    helloworld-py-app-ui/helloworld_py_app_ui/__init__.py
+generate    helloworld-py-app-ui/requirements.txt
+generate    helloworld-py-app-ui/helloworld_py_app_ui/static/swagger-ui/index.html
+</pre>
+
+<p>此时可以看到app框架已经生成了，routes.py是自动生成的路由，运行<strong>init</strong>.py</p>
+<blockquote>
+<p>python3 <strong>init</strong>.py</p>
+</blockquote>
+<pre>
+* Serving Flask app "__init__" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 851-087-703
+</pre>
+
+<p>访问<a href="http://127.0.0.1:5000/static/swagger-ui/index.html" target="_blank" rel="noopener">http://127.0.0.1:5000/static/swagger-ui/index.html</a></p>
+<ul>
+<li>最终效果如下:</li>
+</ul>
+<center><img src="/img/2020/2020-09-26-03.jpg" alt></center><br><center>最终效果</center>
+
+<h1 id="使用sanic模板"><a href="#使用sanic模板" class="headerlink" title="使用sanic模板"></a>使用sanic模板</h1><h2 id="生成框架代码"><a href="#生成框架代码" class="headerlink" title="生成框架代码"></a>生成框架代码</h2><blockquote>
+<p>swagger_py_codegen –swagger-doc helloworld.yml helloworld-app-sanic-ui –ui –spec -tlp sanic</p>
+</blockquote>
+<pre>
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/static/swagger-ui
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/helloworld/schemas.py
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/helloworld/routes.py
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/helloworld/api/persons.py
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/static/helloworld/swagger.json
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/helloworld/validators.py
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/helloworld/api/__init__.py
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/helloworld/__init__.py
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/__init__.py
+generate    helloworld-app-sanic-ui/requirements.txt
+generate    helloworld-app-sanic-ui/helloworld_app_sanic_ui/static/swagger-ui/index.html
+</pre>
+
+<h2 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h2><blockquote>
+<p>cd helloworld-app-sanic-ui/<br>pip3 install -r requirements.txt </p>
+</blockquote>
+<pre>
+
+<p></p></pre><p><!--<span id="busuanzi_container_page_pv">
    阅读量<span id="busuanzi_value_page_pv"></span>次
-</span>--></p>
+</span>--></p><p></p>
 
 
 </div>
@@ -490,12 +577,12 @@
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
   <p><span>版权声明</span></p>
-  <p><span>本文标题:</span>84-github配置当中遇到的一个小坑</p>
+  <p><span>本文标题:</span>107-python3集成flask及swagger</p>
   <p><span>文章作者:</span>盛领</p>
-  <p><span>发布时间:</span>2019年01月06日 - 11:05:33</p>
-  <!--<p><span>最后更新:</span>2020年09月10日 - 11:51:27</p>-->
-  <p><span>原始链接:</span><a href="/post/87088a2b.html" title="84-github配置当中遇到的一个小坑">http://blog.xiaoyuyu.net/post/87088a2b.html</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/87088a2b.html" aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2020年09月26日 - 04:47:11</p>
+  <!--<p><span>最后更新:</span>2020年09月26日 - 12:48:14</p>-->
+  <p><span>原始链接:</span><a href="/post/8e7e2220.html" title="107-python3集成flask及swagger">http://blog.xiaoyuyu.net/post/8e7e2220.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://blog.xiaoyuyu.net/post/8e7e2220.html" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
   <p>如您有任何商业合作或者授权方面的协商，请给我留言：<a href="mailto: sunsetxiao@126.com">sunsetxiao@126.com</a></p>
@@ -563,23 +650,13 @@
 
 <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/github/" rel="tag"><i class="fa fa-tag"></i> github</a>
-          
-            <a href="/tags/git/" rel="tag"><i class="fa fa-tag"></i> git</a>
-          
-            <a href="/tags/问题解决/" rel="tag"><i class="fa fa-tag"></i> 问题解决</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/ae403e3a.html" rel="next" title="81-工具集合-持续更新">
-                <i class="fa fa-chevron-left"></i> 81-工具集合-持续更新
+              <a href="/post/51ca0d3.html" rel="next" title="106-【RASA系列教程-1】-简单开始">
+                <i class="fa fa-chevron-left"></i> 106-【RASA系列教程-1】-简单开始
               </a>
             
           </div>
@@ -587,10 +664,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/46676be6.html" rel="prev" title="86-RestAPI设计指南-1-引言">
-                86-RestAPI设计指南-1-引言 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -791,7 +864,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#过程"><span class="nav-number">2.</span> <span class="nav-text">过程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编写文档"><span class="nav-number">1.</span> <span class="nav-text">编写文档</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用swagger-codegen"><span class="nav-number">2.</span> <span class="nav-text">使用swagger-codegen</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用pip3安装"><span class="nav-number">2.1.</span> <span class="nav-text">使用pip3安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成代码"><span class="nav-number">2.2.</span> <span class="nav-text">生成代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可选参数"><span class="nav-number">2.3.</span> <span class="nav-text">可选参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用sanic模板"><span class="nav-number">3.</span> <span class="nav-text">使用sanic模板</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成框架代码"><span class="nav-number">3.1.</span> <span class="nav-text">生成框架代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载依赖"><span class="nav-number">3.2.</span> <span class="nav-text">下载依赖</span></a></li></ol></li></ol></div>
             
 
           </div>
