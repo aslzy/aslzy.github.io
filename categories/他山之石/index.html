@@ -132,8 +132,7 @@
   <title> 分类: 他山之石 | 小皮博客 | Xiaopi's Blog </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
+<body style="background-color:rgb(0,0,0.5);" itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
   
 
 
@@ -290,7 +289,68 @@
 
  </div>
     </header>
+    <div width="168px" height="100px">
+     
+<!-- 3d -->
 
+<style type="text/css">
+#matrix-background {
+  width:168px;
+  height: 100px;
+  background: 'rgba(0,0,0,.05)';
+  position: absolute;
+  z-index:-200;
+}
+</style>
+<canvas id="matrix-background"></canvas>
+<script type="text/javascript">
+  var cav = document.getElementById('matrix-background');
+  var w = window.screen.width;
+  var h = window.screen.height;
+  var yPositions = Array(20).join(0).split('');
+  //console.log("yPositions: " + yPositions);
+
+  var ctx = cav.getContext('2d');
+
+  var draw = function(){
+
+    ctx.fillStyle = 'rgba(0,0,0,.05)';
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = 'green';
+    ctx.font = '1px';
+
+    yPositions.map(function(y,index){
+
+      text = Math.floor(Math.random() + 0.5);
+
+      x = index*10;
+
+      cav.getContext('2d').fillText(text,x,y);
+
+      if(y>Math.random()*1e4){
+
+        yPositions[index]=0;
+
+      }else{
+
+        yPositions[index]=y+10;
+
+      }
+      // console.log("y: " + y + ",index: " + index + ",x : " + x + ", text: " + text + "");
+
+    });
+
+ 
+
+  }
+
+  setInterval('draw()',120);
+</script>
+
+<!--<script type="text/javascript" color="0,0,0" opacity='0.67' zIndex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+-->
+
+    </div>
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
@@ -854,10 +914,6 @@
 
   
 
-
-<!-- 3d -->
-
-<script type="text/javascript" color="0,0,0" opacity="0.67" zindex="-1" count="32" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":128,"height":256},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>

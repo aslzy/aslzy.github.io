@@ -1847,7 +1847,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #3426c7;
+  background: #0567ff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2986,5 +2986,5 @@ a.search-result {
   }
 }
 body {
-  background-color: #e8eee6;
+  background-color: 'rgba(0,0,0,.05)';
 }
